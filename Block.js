@@ -1,7 +1,7 @@
 function Block(value, position, size) {
    this.value = value;
    this.position = position;
-   this.value = value;
+   this.size = size;
 }
 
 Block.prototype.setPosition = function(position) {
