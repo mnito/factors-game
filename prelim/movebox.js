@@ -1,9 +1,42 @@
 /*
- * Move box across screen and basic collision detection
- * Also fps addition
+ * Basic form of game implemented with experimentation (cross style right now)
  * 
  * Still need to (maybe) prevent jumping and work out touch stuff
+ * Need to adjust concept for more fun
  */
+
+//Main block
+function MainBlock(value, x, y, size, goal)
+{
+    this.value = value;
+    this.x = x;
+    this.y = y;
+    this.size = size;
+    this.goal = goal ? goal : 1;
+}
+
+//Other blocks
+function Block(value, x, y, size) {
+   this.value = value;
+   this.x = x;
+   this.y = y;
+   this.size = size;
+   this.retired = false;
+}
+
+Block.prototype.transform = function( mainBlock ) {
+   var newValue = mainBlock.value;
+   if( mainBlock.goal === 1 ) {
+      newValue = mainBlock.value % this.value === 0 ? mainBlock.value / this.value : mainBlock.value + this.value;
+   } else {
+      newValue = mainBlock.goal % block.value === 0 ? mainBlock.value * this.value : mainBlock.value - this.value;
+   }
+   mainBlock.value = newValue;
+}
+
+Block.prototype.retire = function() {
+    this.retired = true;
+}
 
 console.log('start');
 document.body.innerHTML = "";
@@ -14,10 +47,6 @@ canvas.width = 500;
 canvas.height = 768;
 canvas.style.backgroundColor = 'gray';
 canvas.id = 'view';
-
-document.body.appendChild(canvas);
-
-var x = (canvas.width - canvas.width * .15) / 2;
 
 //Need to figure out touch stuff, Firefox not firing touch events
 canvas.addEventListener('touchstart', function(e){
@@ -34,13 +63,13 @@ var isMouseDown = false;
 
 canvas.addEventListener('mousedown', function(e){
     isMouseDown = true;
-    x = e.clientX;
+    mainBlock.x = e.clientX;
     e.preventDefault();
 }, false);
 
 canvas.addEventListener('mousemove', function(e){
     if(isMouseDown) {
-        x = e.clientX;
+        mainBlock.x = e.clientX;
     }
     e.preventDefault();
 }, false);
@@ -50,7 +79,23 @@ canvas.addEventListener('mouseup', function(e){
     e.preventDefault();
 }, false);
 
-brush = canvas.getContext('2d');
+var brush = canvas.getContext('2d');
+brush.textAlign = 'center';
+brush.textBaseline = 'middle';
+
+document.body.appendChild(canvas);
+
+var mainBlock = new MainBlock(17, (canvas.width - canvas.width * .15) / 2, canvas.height * .10, canvas.width * .15);
+var blocks = [new Block(2, 0, canvas.height, canvas.width * .15), new Block(3, 300, canvas.height - 300, canvas.width * .15)];
+var blocks = generateCrossBlocks(25, 1000);
+function generateCrossBlocks(x, y)
+{
+    var size = canvas.width * .15;
+    return [new Block(2, x, y, size), new Block(3, x + size * 2, y, size), new Block(3, x + size, y + size, size), new Block(3, x + size, y - size, size)];
+}
+var blockValues = [2, 3, 5, 7];
+
+console.log(mainBlock.value);
 
 var fps = 60;
 var timeout = 1000/fps;
@@ -63,26 +108,34 @@ function main(timestamp) {
     }, timeout);
 }
 
-var boxes =  [{x: 0, y: canvas.height - 100, s: canvas.height * .20}, {x: 300, y: canvas.height - 300, s: canvas.height * .30}];
 
 function frame(timestamp) {
     brush.clearRect(0, 0, canvas.width, canvas.height);
     var collide = false;
-    for each(otherBox in boxes) {
-     
+    for each(block in blocks) {
+       
        brush.fillStyle = 'lime';
-       brush.fillRect(otherBox.x, otherBox.y, otherBox.s, otherBox.s);
-       otherBox.y -= .2;
-       if(otherBox.y + otherBox.s < 0) {
-           otherBox.y = canvas.height;
+       brush.fillRect(block.x, block.y, block.size, block.size);
+       brush.fillStyle = "white";
+       brush.font = 'bold ' + block.size * .8 + 'px Arial';
+       brush.fillText('' + block.value, block.x + block.size / 2, block.y + block.size / 2);
+       block.y -= .5;
+       if(block.y + block.size < 0) {
+           block.y = canvas.height;
+           block.retired = false;
+           block.value = blockValues[Math.floor(Math.random() * blockValues.length)];
+           blocks = generateCrossBlocks(Math.floor((Math.random() * 400) + 1), 1000);
        }
-       var s = canvas.width * .15;
-    
-       if (x < otherBox.x + otherBox.s &&
-           x + s > otherBox.x &&
-           canvas.height * .10 < otherBox.y + otherBox.s &&
-           s + canvas.height * .10 > otherBox.y) {
-          collide = true;
+
+       if (mainBlock.x < block.x + block.size &&
+           mainBlock.x + mainBlock.size > block.x &&
+           mainBlock.y < block.y + block.size &&
+           mainBlock.size + mainBlock.y > block.y && !block.retired) {
+           collide = true;
+           console.log(mainBlock.value + '{' + block.value + '}');
+           block.transform( mainBlock );
+           block.retire();
+           console.log(mainBlock.value);
        }
      }
      if(collide) {
@@ -90,7 +143,14 @@ function frame(timestamp) {
      } else {
          brush.fillStyle = 'red';
      }
-     brush.fillRect(x , canvas.height * .10, s, s);
+     brush.fillRect(mainBlock.x , mainBlock.y, mainBlock.size, mainBlock.size);
+     brush.fillStyle = "white";
+     brush.font = 'bold ' + mainBlock.size * .8 + 'px Arial';
+     brush.fillText('' + mainBlock.value, mainBlock.x + mainBlock.size / 2, mainBlock.y + mainBlock.size / 2);
+     if(mainBlock.value === 1) {
+         alert("You won.");
+         mainBlock.value = 90;
+     }
 }
 
 window.requestAnimationFrame(main);
