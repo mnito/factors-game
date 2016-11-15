@@ -1,15 +1,16 @@
 /**
  * Board object
  */
-function Board( board ) {
+function Board( board, prng ) {
     this.board = board;
+    this.prng = typeof prng !== 'undefined' ? prng : Math;
 }
 
 /**
  * Create new unshuffled board
  */
-Board.create = function(rows, columns) {
-    var initial = [];
+Board.create = function(rows, columns, prng) {
+    var board = [];
     var c = 1;
     for(var i = 0; i < rows; i += 1) {
         var row = [];
@@ -17,9 +18,9 @@ Board.create = function(rows, columns) {
             row.push(c);
             c += 1;
         }
-        initial.push(row);
+        board.push(row);
     }
-    return new Board( initial );
+    return new Board(board, prng);
 };
 
 /**
@@ -27,13 +28,13 @@ Board.create = function(rows, columns) {
 
  * Uses modified Fisher-Yates/Durstenfeld algorithm
  */
-Board.prototype.shuffle = function( prng ) {
+Board.prototype.shuffle = function() {
     var index = 0;
     var temp = 0;
     for(var i = 0; i < this.board.length; i += 1) {
         for(var j = 0; j < this.board[i].length; j += 1) {
-            var randomI= Math.floor(prng.next() * this.board.length);
-            var randomJ = Math.floor(prng.next() * this.board[i].length);
+            var randomI= Math.floor(this.prng.random() * this.board.length);
+            var randomJ = Math.floor(this.prng.random() * this.board[i].length);
             var temp = this.board[i][j];
             this.board[i][j] = this.board[randomI][randomJ];
             this.board[randomI][randomJ] = temp;
