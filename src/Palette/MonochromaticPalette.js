@@ -18,7 +18,8 @@ MonochromaticPalette.prototype.generate = function (count, range) {
   var interval = range / (count - 1);
   var min = (100 - range) / 2;
   var colors = [];
-  for(var c = count; c > 0; c -= 1) {
+
+  for(var c = count - 1; c >= 0; c -= 1) {
      colors.push({h: h, s: s, l: Math.floor(interval * c + min)});
   }
   
