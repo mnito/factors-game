@@ -1,9 +1,13 @@
 function XSPRNG(seed) {
-    this.seed = seed;
-    this.previous = seed;
+    this.seed(seed);
     //Max signed 32-bit integer + 1
     this.max = 0x7FFFFFFF + 1;
 }
+
+XSPRNG.prototype.seed = function(seed) {
+    this.original = seed;
+    this.previous = seed;
+};
 
 XSPRNG.prototype.random = function() {
     var next = XSPRNG.xorshift32( this.previous );
