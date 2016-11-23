@@ -1,5 +1,4 @@
-function Level( number, puzzle, palette ) {
-    this.number = number;
+function Level( puzzle, palette ) {
     this.puzzle = puzzle;
     this.palette = palette;
 }
