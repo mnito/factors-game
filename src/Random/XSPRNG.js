@@ -5,17 +5,22 @@ function XSPRNG(seed) {
 }
 
 XSPRNG.prototype.seed = function(seed) {
+    if(!Number.isInteger(seed)) {
+        throw "Seed should be integer.";
+    }
     this.original = seed;
     this.previous = seed;
 };
 
 XSPRNG.prototype.random = function() {
-    var next = XSPRNG.xorshift32( this.previous );
+    var next = XSPRNG.xorshift32plusstar(this.previous);
     this.previous = next;
     return next / this.max;
 };
 
-XSPRNG.xorshift32 = function(number) {
+XSPRNG.xorshift32plusstar = function(number) {
+    number += 113566;
+    number *= 5172511;
     number ^= number << 13;
     number ^= number << 5;
     number ^= number >> 17;

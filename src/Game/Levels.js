@@ -1,16 +1,16 @@
-function Levels(prng, constant, paletteRange, paletteBuilder) {
+function Levels(prng, paletteRange, paletteBuilder) {
     this.prng = prng;
-    this.constant = constant;
     this.paletteRange = paletteRange;
     this.paletteBuilder = paletteBuilder;
 }
 
 Levels.prototype.get = function(level) {
    if( typeof this.prng.seed === 'function') {
-       this.prng.seed(level + this.constant);
+       this.prng.seed(level);
    }
    var hue = Math.floor(this.prng.random() * 360);
-   var saturation = Math.floor(this.prng.random() * 50) + 50;
+   var saturation = Math.floor(this.prng.random() * 20) + 80;
+   
    this.paletteBuilder.hue = hue;
    this.paletteBuilder.saturation = saturation;
 
