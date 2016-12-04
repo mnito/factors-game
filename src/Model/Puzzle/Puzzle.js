@@ -34,7 +34,7 @@ Puzzle.prototype.playIndex = function(index) {
 Puzzle.prototype.state = function() {
     if(this.currentRow !== 0 && this.number === 1) {
         return 'ace';
-    } else if(this.currentRow >= this.board.length) {
+    } else if(this.currentRow >= this.board.get().length) {
         return 'done';
     } else {
         return 'ongoing';
