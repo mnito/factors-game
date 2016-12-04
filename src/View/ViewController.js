@@ -48,9 +48,12 @@ ViewController.prototype.drawBoard = function() {
 };
 
 ViewController.prototype.drawNumber = function() {
-    var lastIndex = this.level.puzzle.history.slice(-1)[0];
+    var lastIndex = this.liveIndex;
     if( typeof lastIndex === 'undefined' ) {
-        lastIndex = 1;
+        lastIndex = this.level.puzzle.history.slice(-1)[0];
+        if( typeof lastIndex === 'undefined' ) {
+            lastIndex = 1;
+        }
     }
     var currentRow = this.level.puzzle.currentRow;
     var x = lastIndex * this.blockSize + ( this.spacing * lastIndex ) + this.leftMargin;
@@ -59,4 +62,10 @@ ViewController.prototype.drawNumber = function() {
     this.brush.fillRect(x, y, this.blockSize, this.blockSize);
     this.brush.fillStyle = this.numberColor;
     this.brush.fillText('' + this.level.puzzle.number, x + this.blockSize / 2, y + this.blockSize / 2);
+};
+
+ViewController.prototype.draw = function() {
+    this.brush.clearRect(0, 0, canvas.width, canvas.height);
+    this.drawNumber();
+    this.drawBoard();
 };
