@@ -1,40 +1,40 @@
-/*** Start puzzle code ***/
-
 function Puzzle(number, board) {
    this.number = number;
    this.original = number;
-   this.board = board.get();
+   this.board = board;
    this.currentRow = 0;
+   this.history = [];
 }
 
-Puzzle.prototype.play = function( number ) {
+Puzzle.prototype.play = function(number) {
     this.assertOngoing();
-    var index  = this.board[this.currentRow].indexOf(number);
+    var index  = this.board.get(this.currentRow).indexOf(number);
     if ( index < 0 ) {
        throw "Number is not currently an option.";
     }
-    return this.playIndex( index );
+    return this.playIndex(index);
 };
 
-Puzzle.prototype.playIndex = function( index, validated ) {
+Puzzle.prototype.playIndex = function(index) {
     this.assertOngoing();
-    if( ! index in this.board[this.currentRow] ) {
+    if(!index in this.board.get(this.currentRow)) {
        throw "Index not available for play.";
     }
-    var number = this.board[this.currentRow][index];
+    var number = this.board.get(this.currentRow, index);
     if (this.number % number === 0) {
        this.number /= number;
     } else {
        this.number += number;
     }
     this.currentRow += 1;
+    this.history.push(index);
     return this.state();
 };
 
 Puzzle.prototype.state = function() {
-    if( this.currentRow !== 0 && this.number === 1 ) {
+    if(this.currentRow !== 0 && this.number === 1) {
         return 'ace';
-    } else if( this.currentRow >= this.board.length ) {
+    } else if(this.currentRow >= this.board.length) {
         return 'done';
     } else {
         return 'ongoing';
@@ -47,7 +47,7 @@ Puzzle.prototype.isComplete = function() {
 };
 
 Puzzle.prototype.assertOngoing = function() {
-    if( this.isComplete() ) {
+    if(this.isComplete()) {
         throw "Puzzle is complete";
     }
 };

@@ -1,8 +1,7 @@
-/**
- * Board object
- */
 function Board( board, prng ) {
     this.board = board;
+    this.columns = board.length;
+    this.rows = board[0].length;
     this.prng = typeof prng !== 'undefined' ? prng : Math;
 }
 
@@ -42,9 +41,15 @@ Board.prototype.shuffle = function() {
     }
 };
 
-Board.prototype.get = function() {
-    return this.board;
-}
+Board.prototype.get = function( row, column ) {
+    if( typeof row === 'undefined' ) {
+       return this.board;
+    }
+    if( typeof column === 'undefined' ) {
+        return this.board[row];
+    }
+    return this.board[row][column];
+};
 
 /**
  * Implements iterable protocol to enable looping with for...of
