@@ -21,6 +21,11 @@ StorageManager.prototype.updateCurrentLevelHistory = function() {
     this.storageMethod.setItem('currentLevelHistory', JSON.stringify(this.history));
 };
 
+StorageManager.prototype.getCurrentLevelHistory = function(history) {
+    var history = this.storageMethod.getItem('currentLevelHistory');
+    return history ? JSON.parse(history) : {};
+};
+
 StorageManager.prototype.getLevelResults = function() {
     var results = this.storageMethod.getItem('levelResults');
     return results ? JSON.parse(results) : {};
