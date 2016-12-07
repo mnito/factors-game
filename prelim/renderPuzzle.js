@@ -18,5 +18,8 @@ function renderPuzzle( levelNumber, canvas, width, height ) {
 
     var inputController = new InputController( vc );
     var keyboardInput = new KeyboardInput(inputController);
+    var touchInput = new TouchInput(inputController, canvas);
+
     keyboardInput.listen();
+    touchInput.listen();
 }
