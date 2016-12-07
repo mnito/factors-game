@@ -1,10 +1,11 @@
-function TouchInput(inputController) {
+function TouchInput(inputController, element) {
     this.inputController = inputController;
+    this.element = typeof element !== 'undefined' ? element : document;
 }
 
 TouchInput.prototype.listen = function() {
-    document.addEventListener('touchstart', this.startTouch.bind(this));
-    document.addEventListener('touchmove', this.detectSwipe.bind(this));
+    this.element.addEventListener('touchstart', this.startTouch.bind(this));
+    this.element.addEventListener('touchmove', this.detectSwipe.bind(this));
 };
 
 TouchInput.prototype.startTouch = function(event) {
