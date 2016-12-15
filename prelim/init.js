@@ -8,14 +8,16 @@ function init(canvas, width, height) {
 
     canvas.id = 'gameView';
 
+    var storageManager = new StorageManager(localStorage);
     var levels = new Levels( new XSPRNG(1), 70, new MonochromaticPaletteBuilder());
-    var level = levels.get(1);
+    var level = levels.get(storageManager.getCurrentLevel());
 
-    var vc = new ViewController( level, canvas, 2, 'white' );
+    var vc = new ViewController( canvas, 2, 'white', level );
 
     vc.draw();
 
-    var inputController = new InputController( vc );
+    var levelController = new LevelController(levels, storageManager, vc);
+    var inputController = new LevelInputController( vc, function() { levelController.next(); } );
     var keyboardInput = new KeyboardInput(inputController);
     var touchInput = new TouchInput(inputController, canvas);
 

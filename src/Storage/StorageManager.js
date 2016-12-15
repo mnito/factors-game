@@ -6,8 +6,12 @@ StorageManager.prototype.setCurrentLevel = function(level) {
     this.storageMethod.setItem('currentLevel', level);
 };
 
+StorageManager.prototype.incrementCurrentLevel = function() {
+   this.setCurrentLevel(this.getCurrentLevel() + 1);
+};
+
 StorageManager.prototype.getCurrentLevel = function() {
-    return this.storageMethod.getItem('currentLevel');
+    return parseInt(this.storageMethod.getItem('currentLevel')) || 1;
 };
 
 StorageManager.prototype.setCurrentLevelHistory = function(history) {

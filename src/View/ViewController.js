@@ -1,9 +1,9 @@
-function ViewController( level, canvas, spacing, numberColor ) {
-   this.level = level;
+function ViewController( canvas, spacing, numberColor, level ) {
    this.canvas = canvas;
    this.spacing = spacing;
    this.numberColor = numberColor;
-   
+   this.level = level;
+
    this.offset = canvas.height * .1;
    this.determineBlockSize();
    this.determineLeftMargin();
@@ -18,7 +18,7 @@ function ViewController( level, canvas, spacing, numberColor ) {
 ViewController.prototype.determineBlockSize = function() {
     var columns = this.level.puzzle.board.columns;
     var rows = this.level.puzzle.board.rows + 1;
-    var maxWidth = this.canvas.width / columns; 
+    var maxWidth = this.canvas.width / columns;
     var maxHeight = (this.canvas.height - this.offset) / rows;
     this.blockSize = Math.min(maxWidth, maxHeight) - this.spacing;
 };
