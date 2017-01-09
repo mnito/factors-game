@@ -9,11 +9,13 @@ TouchInput.prototype.listen = function() {
 };
 
 TouchInput.prototype.startTouch = function(event) {
+    event.preventDefault();
     this.xStart = event.touches[0].clientX;
     this.yStart = event.touches[0].clientY;
 };
 
 TouchInput.prototype.detectSwipe = function(event) {
+    event.preventDefault();
     if( this.xStart === null || this.yStart === null) {
         return;
     }
