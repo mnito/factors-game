@@ -52,7 +52,7 @@ ViewController.prototype.drawNumber = function() {
     if( typeof lastIndex === 'undefined' ) {
         lastIndex = this.level.puzzle.history.slice(-1)[0];
         if( typeof lastIndex === 'undefined' ) {
-            lastIndex = 1;
+            lastIndex = Math.floor(this.level.puzzle.board.columns / 2);
         }
     }
     var currentRow = this.level.puzzle.currentRow;

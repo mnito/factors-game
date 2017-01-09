@@ -3,7 +3,7 @@ function LevelInputController( viewController, completeCallback ) {
   this.completeCallback = completeCallback;
   var index = this.viewController.level.puzzle.history.slice(-1)[0];
   if( typeof index === 'undefined' ) {
-    index = 1;
+    index = Math.floor(this.viewController.level.puzzle.board.columns / 2);
   }
   this.index = index;
 };
