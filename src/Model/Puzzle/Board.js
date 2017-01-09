@@ -1,7 +1,7 @@
 function Board( board, prng ) {
     this.board = board;
-    this.columns = board.length;
-    this.rows = board[0].length;
+    this.rows = board.length;
+    this.columns = board[0].length;
     this.prng = typeof prng !== 'undefined' ? prng : Math;
 }
 
