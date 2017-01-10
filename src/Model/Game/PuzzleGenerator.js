@@ -8,7 +8,7 @@ PuzzleGenerator.generateWinningRun = function(steps, maxIntermediate) {
   var run = [];
   var currentNumber = 1;
   for(var i = steps; i > 0; i -= 1) {
-    var randomIntermediate = Math.floor(Math.random() * maxIntermediate) + 1;
+    var randomIntermediate = Math.floor(Math.random() * (maxIntermediate / 2) ) + ((steps - i) % 2 === 0 ? maxIntermediate / 2 : 1);
     run[i] = randomIntermediate;
     var subtract = currentNumber > randomIntermediate && currentNumber % randomIntermediate !== 0;
     if(subtract) {
