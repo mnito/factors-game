@@ -6,15 +6,16 @@ function LevelCompleteAnimation( viewController, completeCallback ) {
     this.leftMargin = viewController.leftMargin;
     var offset = viewController.offset + viewController.blockSize + viewController.spacing;
     this.y = 3 * viewController.blockSize + offset + (viewController.spacing * 3);
-    this.number = viewController.level.puzzle.number;
+    this.puzzle = viewController.level.puzzle;
     this.numberColor = viewController.numberColor;
     this.blockColor = viewController.level.palette.numberColor;
     this.size = viewController.blockSize;
-    this.completeCallback = this.completeCallback;
+    this.completeCallback = completeCallback;
 }
 
 LevelCompleteAnimation.prototype.frame = function() {
     var brush = this.brush;
+    var number = this.puzzle.number;
     if(this.x < 0) {
         this.size += 30;
         this.y -= 30;
@@ -26,7 +27,7 @@ LevelCompleteAnimation.prototype.frame = function() {
     brush.fillRect(this.x, this.y, this.size, this.size);
     if(this.x >= 0) {
         brush.fillStyle = this.numberColor;
-        brush.fillText('' + this.number, this.x + this.size / 2, this.y + this.size / 2);
+        brush.fillText('' + number, this.x + this.size / 2, this.y + this.size / 2);
     }
     if(this.size > this.canvas.width) {
         if(typeof this.completeCallback !== 'undefined' ) {
@@ -43,7 +44,6 @@ LevelCompleteAnimation.prototype.frame = function() {
 LevelCompleteAnimation.prototype.run = function() {
     var lastIndex = this.history.slice(-1)[0];
     this.x = lastIndex * this.size + (this.spacing * lastIndex) + this.leftMargin;
-
     var instance = this;
     setTimeout(function() { instance.frame(); }, 500);
 };

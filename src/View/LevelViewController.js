@@ -1,4 +1,4 @@
-function ViewController( canvas, spacing, numberColor, level ) {
+function LevelViewController( canvas, spacing, numberColor, level ) {
    this.canvas = canvas;
    this.spacing = spacing;
    this.numberColor = numberColor;
@@ -15,7 +15,7 @@ function ViewController( canvas, spacing, numberColor, level ) {
    this.brush = brush;
 }
 
-ViewController.prototype.determineBlockSize = function() {
+LevelViewController.prototype.determineBlockSize = function() {
     var columns = this.level.puzzle.board.columns;
     var rows = this.level.puzzle.board.rows + 1;
     var maxWidth = this.canvas.width / columns;
@@ -23,12 +23,12 @@ ViewController.prototype.determineBlockSize = function() {
     this.blockSize = Math.min(maxWidth, maxHeight) - this.spacing;
 };
 
-ViewController.prototype.determineLeftMargin = function() {
+LevelViewController.prototype.determineLeftMargin = function() {
     var columns = this.level.puzzle.board.columns;
     this.leftMargin = (this.canvas.width - ((this.blockSize * columns) + (this.spacing * (columns - 1)))) / 2;
 };
 
-ViewController.prototype.drawBoard = function() {
+LevelViewController.prototype.drawBoard = function() {
    var blockIndex = this.level.puzzle.currentRow * this.level.puzzle.board.columns;
    var x = 0;
    var y = 0;
@@ -47,7 +47,7 @@ ViewController.prototype.drawBoard = function() {
   }
 };
 
-ViewController.prototype.drawNumber = function() {
+LevelViewController.prototype.drawNumber = function() {
     var lastIndex = this.liveIndex;
     if( typeof lastIndex === 'undefined' ) {
         lastIndex = this.level.puzzle.history.slice(-1)[0];
@@ -64,7 +64,7 @@ ViewController.prototype.drawNumber = function() {
     this.brush.fillText('' + this.level.puzzle.number, x + this.blockSize / 2, y + this.blockSize / 2);
 };
 
-ViewController.prototype.draw = function() {
+LevelViewController.prototype.draw = function() {
     this.brush.clearRect(0, 0, canvas.width, canvas.height);
     this.drawNumber();
     this.drawBoard();
