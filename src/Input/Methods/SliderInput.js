@@ -13,31 +13,50 @@ function SliderInput(element, min, max, xPad, yMin, yMax, callback) {
 SliderInput.prototype.listen = function() {
     this.element.addEventListener('touchstart', this.startTouch.bind(this));
     this.element.addEventListener('touchmove', this.determineValue.bind(this));
+    this.element.addEventListener('touchend', this.endTouch.bind(this));
     document.addEventListener('keydown', this.setValue.bind(this));
 };
 
 SliderInput.prototype.startTouch = function(event) {
     event.preventDefault();
+    event.stopPropagation();
     this.xStart = event.touches[0].clientX;
     this.yStart = event.touches[0].clientY;
 };
 
 SliderInput.prototype.determineValue = function(event) {
     event.preventDefault();
+    event.stopPropagation();
     if( this.xStart === null || this.yStart < this.yMin || this.yStart > this.yMax ) {
         return;
     }
     var xEnd = event.touches[0].clientX;
     var yEnd = event.touches[0].clientY;
+    if(Math.abs(this.yStart - yEnd) > Math.abs(this.xStart - xEnd) - 8 && (yEnd - this.yStart > 0)) {
+        if( yEnd - this.yStart > 20 ) {
+            alert(yEnd - this.yStart);
+        }
+        return;
+    }
     if(this.dispatchBeforeTouchValueChange(this.value, xEnd, yEnd)) {
         return;
     }
     var value = Math.max(this.min, Math.min(Math.round((((xEnd - this.xPad) * (this.max - this.min)) / (this.maxWidth - this.xPad * 2)) + this.min), this.max));
     this.value = value;
     if(typeof this.callback === 'function') {
-        this.callback(value, Math.max(this.xPad, Math.min(xEnd, this.maxWidth - this.xPad)), event.touches[0].clientY);
+        var x = Math.max(this.xPad, Math.min(xEnd, this.maxWidth - this.xPad));
+        var y = event.touches[0].clientY;
+        this.lastX = x;
+        this.lastY = y;
+        this.callback(value, x, y, false);
     }
 };
+
+SliderInput.prototype.endTouch = function(event) {
+    this.xStart = null;
+    this.yStart = null;
+    this.callback(this.value, this.lastX, this.lastY, true);
+}
 
 SliderInput.prototype.dispatchBeforeTouchValueChange = function(value, xEnd, yEnd) {
     if(!(typeof this.beforeTouchValueChange === 'function')) {
@@ -85,7 +104,7 @@ SliderInput.prototype.setValue = function(event) {
         }
     }
     var x = Math.max(this.value, this.min) * ((this.maxWidth - this.xPad * 2) / this.max) + this.xPad;
-    this.callback(this.value, x);
+    this.callback(this.value, x, null, true);
 };
 
 /*

@@ -1,4 +1,4 @@
-function LevelSelectViewController( canvas, storageManager, numberColor, blockColor, blockY, rows, columns ) {
+function LevelSelectViewController( canvas, storageManager, numberColor, blockColor, blockY, rows, columns, prng, monochromaticPaletteBuilder ) {
    this.canvas = canvas;
    this.brush = canvas.getContext('2d');
    this.storageManager = storageManager;
@@ -9,11 +9,24 @@ function LevelSelectViewController( canvas, storageManager, numberColor, blockCo
    this.blockY = blockY;
    this.brush.textAlign = 'center';
    this.brush.textBaseline = 'middle';
+   this.prng = prng;
+   this.monochromaticPaletteBuilder = monochromaticPaletteBuilder;
 }
 
-LevelSelectViewController.prototype.drawNumber = function(value, x) {
+LevelSelectViewController.prototype.drawNumber = function(value, x, y, end) {
+    var blockColor = '#000000';
+    if(end) {
+        if( typeof this.prng.seed === 'function') {
+            this.prng.seed(value);
+        }
+        var hue = Math.floor(this.prng.random() * 360);
+        var saturation = Math.floor(this.prng.random() * 20) + 80;
+        this.monochromaticPaletteBuilder.hue = hue;
+        this.monochromaticPaletteBuilder.saturation = saturation;
+        blockColor = this.monochromaticPaletteBuilder.getColor(8, 16, 80).toString();
+    }
     this.brush.font = 'bold ' + this.blockSize * .5 + 'px Arial';
-    this.brush.fillStyle = this.blockColor;
+    this.brush.fillStyle = blockColor;
     this.brush.fillRect(x - this.blockSize / 2, this.blockY, this.blockSize, this.blockSize);
     this.brush.fillStyle = this.numberColor;
     this.brush.fillText('' + value, x, this.blockY + this.blockSize / 2);
@@ -24,18 +37,18 @@ LevelSelectViewController.prototype.drawLevelResults = function(value) {
     var number = results.endNumber;
     if( number === 1 ) {
         result = 'ACE!'
-    }else {
+    } else {
         result = number < 10 ? 'LOW!' : 'High';
     }
     result += ' (' + number + ')';
+    this.brush.fillText('Level ' + value, canvas.width /2, canvas.height * .10);
     this.brush.font = 'bold ' + Math.min(canvas.width * .25, 100) + 'px Arial';
-    this.brush.fillText(result, canvas.width / 2, canvas.height * .15);
+    this.brush.fillText(result, canvas.width / 2, canvas.height * .30);
     this.brush.font = Math.min(canvas.width * .1, 40) + 'px Arial';
-    //this.brush.fillText('Lowest End Number: ' + results.endNumber, canvas.width / 2, canvas.height * .2);
 };
 
-LevelSelectViewController.prototype.draw = function(value, x) {
+LevelSelectViewController.prototype.draw = function(value, x, y, end) {
     this.brush.clearRect(0, 0, canvas.width, canvas.height);
-    this.drawNumber(value, x);
+    this.drawNumber(value, x, y, end);
     this.drawLevelResults(value);
 };
