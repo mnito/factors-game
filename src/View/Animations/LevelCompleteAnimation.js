@@ -8,7 +8,7 @@ function LevelCompleteAnimation( viewController, completeCallback ) {
     this.y = 3 * viewController.blockSize + offset + (viewController.spacing * 3);
     this.puzzle = viewController.level.puzzle;
     this.numberColor = viewController.numberColor;
-    this.blockColor = viewController.level.palette.numberColor;
+    this.blockColor = viewController.level.palette.numberColor.toString();
     this.size = viewController.blockSize;
     this.completeCallback = completeCallback;
 }

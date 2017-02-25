@@ -1,9 +1,9 @@
-function LevelInputController( viewController, completeCallback ) {
+function LevelInputController( viewController, onComplete ) {
   this.viewController = viewController;
-  this.completeCallback = completeCallback;
+  this.onComplete = onComplete;
   var index = this.viewController.level.puzzle.history.slice(-1)[0];
   if( typeof index === 'undefined' ) {
-    index = Math.floor(this.viewController.level.puzzle.board.columns / 2);
+      index = Math.floor(this.viewController.level.puzzle.board.columns / 2);
   }
   this.index = index;
 };
@@ -31,7 +31,7 @@ LevelInputController.prototype.down = function() {
       this.viewController.level.puzzle.playIndex(this.index);
       this.viewController.draw();
   }
-  if(this.viewController.level.puzzle.isComplete() && typeof this.completeCallback !== 'undefined') {
-      this.completeCallback(this.viewController.level);
+  if(this.viewController.level.puzzle.isComplete() && typeof this.onComplete === 'function') {
+      this.onComplete(this.viewController.level);
   }
 };

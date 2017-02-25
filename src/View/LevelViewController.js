@@ -9,11 +9,14 @@ function LevelViewController( canvas, spacing, numberColor, level ) {
    this.determineLeftMargin();
 
    var brush = canvas.getContext('2d');
-   brush.font = 'bold ' + this.blockSize * .5 + 'px Arial';
-   brush.textAlign = 'center';
-   brush.textBaseline = 'middle';
    this.brush = brush;
 }
+
+LevelViewController.prototype.resetFont = function() {
+    this.brush.font = 'bold ' + this.blockSize * .5 + 'px Arial';
+    this.brush.textAlign = 'center';
+    this.brush.textBaseline = 'middle';
+};
 
 LevelViewController.prototype.determineBlockSize = function() {
     var columns = this.level.puzzle.board.columns;
@@ -66,6 +69,7 @@ LevelViewController.prototype.drawNumber = function() {
 
 LevelViewController.prototype.draw = function() {
     this.brush.clearRect(0, 0, canvas.width, canvas.height);
+    this.resetFont();
     this.drawNumber();
     this.drawBoard();
 };
