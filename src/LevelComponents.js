@@ -36,10 +36,10 @@ LevelComponents.prototype.getInputListeners = function() {
     return this.inputListeners;
 };
 
-LevelComponents.prototype.getCompleteAnimation = function() {
+LevelComponents.prototype.getCompleteAnimation = function(score) {
     var viewController = this.getViewController();
     return new LevelCompleteAnimation(viewController, function() {
-        var levelCompleteViewController = new LevelCompleteViewController(this.canvas, viewController.level, new Score([]), 'white');
+        var levelCompleteViewController = new LevelCompleteViewController(this.canvas, viewController.level, score, 'white');
         levelCompleteViewController.draw();
     });
 };

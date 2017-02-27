@@ -27,17 +27,17 @@ StorageManager.prototype.updateCurrentLevelHistory = function() {
 
 StorageManager.prototype.getCurrentLevelHistory = function(history) {
     var history = this.storageMethod.getItem('currentLevelHistory');
-    return history ? JSON.parse(history) : {};
+    return history ? JSON.parse(history) : [];
 };
 
 StorageManager.prototype.getLevelResults = function() {
     var results = this.storageMethod.getItem('levelResults');
-    return results ? JSON.parse(results) : {};
+    return results ? JSON.parse(results) : [];
 };
 
 StorageManager.prototype.setLevelResult = function(level, result) {
     var results = this.getLevelResults();
-    results[level] = result;
+    results[level - 1] = result;
     this.storageMethod.setItem('levelResults', JSON.stringify(results));
 };
 

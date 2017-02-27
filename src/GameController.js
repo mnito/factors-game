@@ -2,6 +2,7 @@ function GameController(levels, levelComponents, storageManager) {
     this.levels = levels;
     this.levelComponents = levelComponents;
     this.storageManager = storageManager;
+    this.score = new Score([]);
 }
 
 GameController.prototype.startLevel = function(level) {
@@ -11,7 +12,10 @@ GameController.prototype.startLevel = function(level) {
     var inputController = this.levelComponents.getInputController();
     levelComponents.setInputControllers(inputController);
     inputController.onComplete = function() {
-        levelComponents.getCompleteAnimation().run();
+        var result = {level: levelComponents.level.puzzle.original, path: levelComponents.level.puzzle.history, endNumber: levelComponents.level.puzzle.number};
+        this.storageManager.setLevelResult(result.level, result);
+        this.score.results = this.storageManager.getLevelResults();
+        levelComponents.getCompleteAnimation(this.score).run();
         var completeInputController = levelComponents.getCompleteInputController(this.storageManager, this.startLevel.bind(this));
         levelComponents.setInputControllers(completeInputController);
     }.bind(this);

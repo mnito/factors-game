@@ -29,9 +29,8 @@ LevelCompleteViewController.prototype.drawScore = function() {
     var lowerBound = Math.max(levelNumber - 15, 1);
     var upperBound = levelNumber;
     try {
-
-        total = score.average();
-        sixteenTotal = score.averageFrom(lowerBound, upperBound);
+        total = this.score.average().toFixed(4);
+        sixteenTotal = this.score.averageFrom(lowerBound, upperBound).toFixed(4);
     }
     catch(e){ }
     this.brush.font = Math.min(canvas.width * .1, 40) + 'px Arial';

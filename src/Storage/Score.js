@@ -19,7 +19,7 @@ Score.prototype.compositeFrom = function(firstLevel, lastLevel) {
   }
   var composite = 0;
   for(var i = firstLevel - 1; i < lastLevel; i += 1) {
-    composite += this.results[i].number;
+    composite += this.results[i].endNumber;
   }
   return composite;
 };
