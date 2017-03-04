@@ -29,11 +29,22 @@ LevelSelectViewController.prototype.drawNumber = function(value, x, y, end) {
     this.brush.fillStyle = blockColor;
     this.brush.fillRect(x - this.blockSize / 2, this.blockY, this.blockSize, this.blockSize);
     this.brush.fillStyle = this.numberColor;
+    if(value < 1) {
+        value = '?';
+    }
     this.brush.fillText('' + value, x, this.blockY + this.blockSize / 2);
 };
 
 LevelSelectViewController.prototype.drawLevelResults = function(value) {
+    if(value < 1) {
+        this.drawDefaultView();
+        return;
+    }
     var results = this.storageManager.getLevelResult(value);
+    if(!results) {
+        this.drawUnplayedLevelView(value);
+        return;
+    }
     var number = results.endNumber;
     if( number === 1 ) {
         result = 'ACE!'
@@ -41,10 +52,18 @@ LevelSelectViewController.prototype.drawLevelResults = function(value) {
         result = number < 10 ? 'LOW!' : 'High';
     }
     result += ' (' + number + ')';
-    this.brush.fillText('Level ' + value, canvas.width /2, canvas.height * .10);
+    this.brush.fillText('Level ' + value, canvas.width/2, canvas.height * .10);
     this.brush.font = 'bold ' + Math.min(canvas.width * .25, 100) + 'px Arial';
-    this.brush.fillText(result, canvas.width / 2, canvas.height * .30);
+    this.brush.fillText(result, canvas.width/2, canvas.height * .30);
     this.brush.font = Math.min(canvas.width * .1, 40) + 'px Arial';
+};
+
+LevelSelectViewController.prototype.drawDefaultView = function() {
+    this.brush.fillText('Select a Level', canvas.width/2, canvas.height * .10);
+};
+
+LevelSelectViewController.prototype.drawUnplayedLevelView = function(value) {
+    this.brush.fillText('Level ' + value, canvas.width/2, canvas.height * .10);
 };
 
 LevelSelectViewController.prototype.draw = function(value, x, y, end) {

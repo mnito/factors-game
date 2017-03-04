@@ -26,8 +26,7 @@ MonochromaticPaletteBuilder.prototype.build = function(count, range) {
   return palette;
 };
 
-MonochromaticPaletteBuilder.prototype.getColor = function(number, count, range)
-{
+MonochromaticPaletteBuilder.prototype.getColor = function(number, count, range) {
     var maxRange = 100;
     if (range > 100) {
       range = 100;
@@ -37,4 +36,4 @@ MonochromaticPaletteBuilder.prototype.getColor = function(number, count, range)
     var interval = range / (count - 1);
 
     return new HSL(this.hue, this.saturation, Math.floor(interval * (count / 2) + min));
-}
+};

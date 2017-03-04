@@ -8,13 +8,19 @@ function SliderInput(element, min, max, xPad, yMin, yMax, callback) {
     this.yMax = yMax;
     this.callback = callback;
     this.value = min;
+    this.listeners = {
+        touchStart: this.startTouch.bind(this),
+        touchMove: this.determineValue.bind(this),
+        touchEnd: this.endTouch.bind(this),
+        keyDown: this.setValue.bind(this)
+    };
 }
 
 SliderInput.prototype.listen = function() {
-    this.element.addEventListener('touchstart', this.startTouch.bind(this));
-    this.element.addEventListener('touchmove', this.determineValue.bind(this));
-    this.element.addEventListener('touchend', this.endTouch.bind(this));
-    document.addEventListener('keydown', this.setValue.bind(this));
+    this.element.addEventListener('touchstart', this.listeners.touchStart);
+    this.element.addEventListener('touchmove', this.listeners.touchMove);
+    this.element.addEventListener('touchend', this.listeners.touchEnd);
+    document.addEventListener('keydown', this.listeners.keyDown);
 };
 
 SliderInput.prototype.startTouch = function(event) {
@@ -34,7 +40,7 @@ SliderInput.prototype.determineValue = function(event) {
     var yEnd = event.touches[0].clientY;
     if(Math.abs(this.yStart - yEnd) > Math.abs(this.xStart - xEnd) - 8 && (yEnd - this.yStart > 0)) {
         if( yEnd - this.yStart > 20 ) {
-            alert(yEnd - this.yStart);
+            this.onSelect(this.value);
         }
         return;
     }
@@ -65,9 +71,7 @@ SliderInput.prototype.dispatchBeforeTouchValueChange = function(value, xEnd, yEn
     return this.beforeTouchValueChange({currentValue: value, xStart: this.xStart, yStart: this.yStart, xEnd: xEnd, yEnd: yEnd });
 }
 
-SliderInput.prototype.beforeTouchValueChange = function(callback) {
-    this.beforeTouchValueChange = callback;
-}
+SliderInput.prototype.onSelect = function(value) {};
 
 SliderInput.prototype.setValue = function(event) {
     var keyCode = event.keyCode;
@@ -100,13 +104,33 @@ SliderInput.prototype.setValue = function(event) {
                 if(this.value < this.max) {
                     this.value += 1;
                 }
+                console.log(this.value);
+                console.log(this.max);
                 break;
+            //Down
+            case 40 :
+            case 74 :
+            case 83 :
+              this.onSelect(this.value);
+              return;
         }
     }
     var x = Math.max(this.value, this.min) * ((this.maxWidth - this.xPad * 2) / this.max) + this.xPad;
     this.callback(this.value, x, null, true);
 };
 
+SliderInput.prototype.triggerInitial = function() {
+    var x = this.min * ((this.maxWidth - this.xPad * 2) / this.max) + this.xPad;
+    this.lastX = x;
+    this.callback(this.min, x, null, true);
+};
+
+SliderInput.prototype.detach = function() {
+    this.element.removeEventListener('touchstart', this.listeners.touchStart);
+    this.element.removeEventListener('touchmove', this.listeners.touchMove);
+    this.element.removeEventListener('touchend', this.listeners.touchEnd);
+    document.removeEventListener('keydown', this.listeners.keyDown);
+};
 /*
 sliderInputController.beforeTouchValueChange(function(event) {
     var deltaX = event.xEnd - event.xStart;

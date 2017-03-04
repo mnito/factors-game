@@ -67,9 +67,12 @@ LevelViewController.prototype.drawNumber = function() {
     this.brush.fillText('' + this.level.puzzle.number, x + this.blockSize / 2, y + this.blockSize / 2);
 };
 
+LevelViewController.onDraw = function(levelViewController) {};
+
 LevelViewController.prototype.draw = function() {
     this.brush.clearRect(0, 0, canvas.width, canvas.height);
     this.resetFont();
     this.drawNumber();
     this.drawBoard();
+    this.onDraw(this);
 };
