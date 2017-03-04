@@ -29,7 +29,7 @@ LevelCompleteAnimation.prototype.frame = function() {
         brush.fillStyle = this.numberColor;
         brush.fillText('' + number, this.x + this.size / 2, this.y + this.size / 2);
     }
-    if(this.size > this.canvas.width) {
+    if(this.size > this.canvas.width && this.size > this.canvas.height) {
         if(typeof this.completeCallback !== 'undefined' ) {
             this.completeCallback();
         }
