@@ -1,11 +1,15 @@
 function TouchInput(inputController, element) {
     this.inputController = inputController;
     this.element = typeof element !== 'undefined' ? element : document;
+    this.listeners = {
+        touchStart: this.startTouch.bind(this),
+        touchMove: this.detectSwipe.bind(this)
+    };
 }
 
 TouchInput.prototype.listen = function() {
-    this.element.addEventListener('touchstart', this.startTouch.bind(this));
-    this.element.addEventListener('touchmove', this.detectSwipe.bind(this));
+    this.element.addEventListener('touchstart', this.listeners.touchStart);
+    this.element.addEventListener('touchmove', this.listeners.touchMove);
 };
 
 TouchInput.prototype.startTouch = function(event) {
@@ -36,4 +40,9 @@ TouchInput.prototype.detectSwipe = function(event) {
 
     this.xStart = null;
     this.yStart = null;
+};
+
+TouchInput.prototype.detach = function() {
+    this.element.removeEventListener('touchstart', this.listeners.touchStart);
+    this.element.removeEventListener('touchmove', this.listeners.touchMove);
 };
