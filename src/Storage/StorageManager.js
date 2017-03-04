@@ -42,5 +42,5 @@ StorageManager.prototype.setLevelResult = function(level, result) {
 };
 
 StorageManager.prototype.getLevelResult = function(level) {
-    return this.getLevelResults()[level];
+    return this.getLevelResults()[level - 1];
 };
