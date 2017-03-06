@@ -5,7 +5,7 @@ function LevelCompleteAnimation( viewController, completeCallback ) {
     this.spacing = viewController.spacing;
     this.leftMargin = viewController.leftMargin;
     var offset = viewController.offset + viewController.blockSize + viewController.spacing;
-    this.y = 3 * viewController.blockSize + offset + (viewController.spacing * 3);
+    this.y = this.history.length * viewController.blockSize + offset + (viewController.spacing * this.history.length);
     this.puzzle = viewController.level.puzzle;
     this.numberColor = viewController.numberColor;
     this.blockColor = viewController.level.palette.numberColor.toString();
@@ -16,11 +16,15 @@ function LevelCompleteAnimation( viewController, completeCallback ) {
 LevelCompleteAnimation.prototype.frame = function() {
     var brush = this.brush;
     var number = this.puzzle.number;
-    if(this.x < 0) {
+    if(this.y < this.canvas.height - this.size) {
+        this.y += 30;
+    } else if( this.y !== this.canvas.height - this.size) {
+        this.y = this.canvas.height - this.size;
+    } else if(this.x < 0) {
         this.size += 30;
         this.y -= 30;
     } else {
-        this.x -= 15;
+        this.x -= 13 + (this.canvas.width * .005);
     }
     brush.fillStyle = this.blockColor;
     brush.clearRect(0, 0, this.canvas.width, this.canvas.height);
