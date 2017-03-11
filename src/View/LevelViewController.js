@@ -69,7 +69,7 @@ LevelViewController.prototype.drawNumber = function() {
 };
 
 LevelViewController.prototype.drawStatusBar = function() {
-    this.brush.font = this.blockSize / 3.25 + 'px sans-serif';
+    this.brush.font = this.blockSize / 3.75 + 'px sans-serif';
     this.brush.textAlign = 'left';
     this.brush.textBaseline = 'top';
     this.brush.fillStyle = this.level.palette.numberColor.toString();
