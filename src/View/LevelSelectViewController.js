@@ -14,19 +14,7 @@ function LevelSelectViewController( canvas, storageManager, numberColor, blockCo
 }
 
 LevelSelectViewController.prototype.drawNumber = function(value, x, y, end) {
-    var blockColor = '#000000';
-    if(end) {
-        if( typeof this.prng.seed === 'function') {
-            this.prng.seed(value);
-        }
-        var hue = Math.floor(this.prng.random() * 360);
-        var saturation = Math.floor(this.prng.random() * 20) + 80;
-        this.monochromaticPaletteBuilder.hue = hue;
-        this.monochromaticPaletteBuilder.saturation = saturation;
-        blockColor = this.monochromaticPaletteBuilder.getColor(8, 16, 80).toString();
-    }
-    this.brush.font = 'bold ' + this.blockSize * .5 + 'px Arial';
-    this.brush.fillStyle = blockColor;
+    this.brush.font = 'bold ' + this.blockSize * .5 + 'px sans-serif';
     this.brush.fillRect(x - this.blockSize / 2, this.blockY, this.blockSize, this.blockSize);
     this.brush.fillStyle = this.numberColor;
     if(value < 1) {
@@ -59,6 +47,7 @@ LevelSelectViewController.prototype.drawLevelResults = function(value) {
 };
 
 LevelSelectViewController.prototype.drawDefaultView = function() {
+    this.brush.font = 'bold ' + this.blockSize * .5 + 'px Arial';
     this.brush.fillText('Select a Level', canvas.width/2, canvas.height * .10);
 };
 
@@ -67,7 +56,19 @@ LevelSelectViewController.prototype.drawUnplayedLevelView = function(value) {
 };
 
 LevelSelectViewController.prototype.draw = function(value, x, y, end) {
+    var blockColor = '#000000';
+    if(end) {
+        if( typeof this.prng.seed === 'function') {
+            this.prng.seed(value);
+        }
+        var hue = Math.floor(this.prng.random() * 360);
+        var saturation = Math.floor(this.prng.random() * 20) + 80;
+        this.monochromaticPaletteBuilder.hue = hue;
+        this.monochromaticPaletteBuilder.saturation = saturation;
+        blockColor = this.monochromaticPaletteBuilder.getColor(8, 16, 80).toString();
+    }
     this.brush.clearRect(0, 0, canvas.width, canvas.height);
-    this.drawNumber(value, x, y, end);
+    this.brush.fillStyle = blockColor;
     this.drawLevelResults(value);
+    this.drawNumber(value, x, y, end);
 };
