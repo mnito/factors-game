@@ -65,7 +65,8 @@ LevelSelectViewController.prototype.draw = function(value, x, y, end) {
         var saturation = Math.floor(this.prng.random() * 20) + 80;
         this.monochromaticPaletteBuilder.hue = hue;
         this.monochromaticPaletteBuilder.saturation = saturation;
-        blockColor = this.monochromaticPaletteBuilder.getColor(8, 16, 80).toString();
+        boardColors = this.monochromaticPaletteBuilder.build(16, 70);
+        blockColor = HSL.complement(boardColors[Math.floor(this.prng.random() * 16)]).toString();
     }
     this.brush.clearRect(0, 0, canvas.width, canvas.height);
     this.brush.fillStyle = blockColor;
