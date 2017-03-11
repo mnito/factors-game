@@ -75,7 +75,11 @@ LevelViewController.prototype.drawStatusBar = function() {
     this.brush.fillStyle = this.level.palette.numberColor.toString();
     var levelStr = 'level ' + this.level.puzzle.original;
     if(this.score) {
-        levelStr += ' | avg: ' + this.score.average().toFixed(4);
+        try {
+            levelStr += ' | avg: ' + this.score.average().toFixed(4);
+        } catch(e) {
+            //
+        }
     }
     this.brush.fillText(levelStr, this.leftMargin + this.spacing, 0);
     this.brush.textAlign = 'right';
