@@ -104,13 +104,12 @@ SliderInput.prototype.setValue = function(event) {
                 if(this.value < this.max) {
                     this.value += 1;
                 }
-                console.log(this.value);
-                console.log(this.max);
                 break;
-            //Down
+            //Down or enter
             case 40 :
             case 74 :
             case 83 :
+            case 13 :
               this.onSelect(this.value);
               return;
         }
