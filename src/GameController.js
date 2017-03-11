@@ -25,7 +25,14 @@ GameController.prototype.startLevel = function(level) {
     levelComponents.setInputControllers(inputController);
     inputController.onComplete = function() {
         var result = {level: levelComponents.level.puzzle.original, path: levelComponents.level.puzzle.history, endNumber: levelComponents.level.puzzle.number};
-        this.storageManager.setLevelResult(result.level, result);
+        try {
+            var currentResult = this.storageManager.getLevelResult(result.level);
+            if(result.endNumber < currentResult.endNumber || (result.endNumber === currentResult.endNumber && result.path.length <= currentResult.path.length)) {
+                this.storageManager.setLevelResult(result.level, result);
+            }
+        } catch(e) {
+            this.storageManager.setLevelResult(result.level, result);
+        }
         this.score.results = this.storageManager.getLevelResults();
         levelComponents.getCompleteAnimation(this.score).run();
         var completeInputController = levelComponents.getCompleteInputController(this.storageManager, this.startLevel.bind(this));
