@@ -10,4 +10,4 @@ HSL.complement = function( hsl ) {
 
 HSL.prototype.toString = function() {
     return 'hsl(' + this.h + ',' + this.s + '%,' + this.l + '%)';
-}
+};
