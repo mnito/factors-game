@@ -35,3 +35,8 @@ LevelInputController.prototype.down = function() {
       this.onComplete(this.viewController.level);
   }
 };
+
+LevelInputController.prototype.up = function() {
+    this.viewController.level.puzzle.reset();
+    this.viewController.draw();
+};

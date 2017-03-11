@@ -36,6 +36,8 @@ TouchInput.prototype.detectSwipe = function(event) {
         deltaX < 0 ? this.inputController.left(): this.inputController.right();
     } else if(deltaY > 0) {
         this.inputController.down();
+    } else {
+        this.inputController.up();
     }
 
     this.xStart = null;

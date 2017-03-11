@@ -31,6 +31,12 @@ Puzzle.prototype.playIndex = function(index) {
     return this.state();
 };
 
+Puzzle.prototype.reset = function() {
+    this.history = [];
+    this.number = this.original;
+    this.currentRow = 0;
+};
+
 Puzzle.prototype.state = function() {
     if(this.currentRow !== 0 && this.number === 1) {
         return 'ace';

@@ -17,6 +17,12 @@ KeyboardInput.prototype.listener = function(e) {
        e.preventDefault();
        this.inputController.down();
        break;
+     case 38 :
+     case 75 :
+     case 87 :
+       e.preventDefault();
+       this.inputController.up();
+       break;
      case 39 :
      case 68 :
      case 76 :
