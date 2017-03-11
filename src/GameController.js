@@ -18,6 +18,8 @@ GameController.prototype.startLevel = function(level) {
     var levelComponents = this.levelComponents;
     levelComponents.level = this.levels.get(level);
     var viewController = this.levelComponents.getViewController();
+    this.score.results = this.storageManager.getLevelResults();
+    viewController.score = this.score;
     var inputController = this.levelComponents.getInputController();
     levelComponents.setInputControllers(inputController);
     inputController.onComplete = function() {

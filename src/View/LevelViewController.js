@@ -1,10 +1,11 @@
-function LevelViewController( canvas, spacing, numberColor, level ) {
+function LevelViewController( canvas, spacing, numberColor, level, score ) {
    this.canvas = canvas;
    this.spacing = spacing;
    this.numberColor = numberColor;
    this.level = level;
+   this.score = score;
 
-   this.offset = canvas.height * .1;
+   this.offset = canvas.height * .15;
    this.determineBlockSize();
    this.determineLeftMargin();
 
@@ -13,7 +14,7 @@ function LevelViewController( canvas, spacing, numberColor, level ) {
 }
 
 LevelViewController.prototype.resetFont = function() {
-    this.brush.font = 'bold ' + this.blockSize * .5 + 'px Arial';
+    this.brush.font = 'bold ' + this.blockSize * .5 + 'px sans-serif';
     this.brush.textAlign = 'center';
     this.brush.textBaseline = 'middle';
 };
@@ -67,6 +68,20 @@ LevelViewController.prototype.drawNumber = function() {
     this.brush.fillText('' + this.level.puzzle.number, x + this.blockSize / 2, y + this.blockSize / 2);
 };
 
+LevelViewController.prototype.drawStatusBar = function() {
+    this.brush.font = this.blockSize / 3.25 + 'px sans-serif';
+    this.brush.textAlign = 'left';
+    this.brush.textBaseline = 'top';
+    this.brush.fillStyle = this.level.palette.numberColor.toString();
+    var levelStr = 'level ' + this.level.puzzle.original;
+    if(this.score) {
+        levelStr += ' | avg: ' + this.score.average().toFixed(4);
+    }
+    this.brush.fillText(levelStr, this.leftMargin + this.spacing, 0);
+    this.brush.textAlign = 'right';
+    this.brush.fillText('[select]', this.leftMargin + (this.blockSize + this.spacing) * 4, 0);
+};
+
 LevelViewController.onDraw = function(levelViewController) {};
 
 LevelViewController.prototype.draw = function() {
@@ -74,5 +89,6 @@ LevelViewController.prototype.draw = function() {
     this.resetFont();
     this.drawNumber();
     this.drawBoard();
+    this.drawStatusBar();
     this.onDraw(this);
 };

@@ -10,6 +10,11 @@ function LevelCompleteAnimation( viewController, completeCallback ) {
     this.numberColor = viewController.numberColor;
     this.blockColor = viewController.level.palette.numberColor.toString();
     this.size = viewController.blockSize;
+    this.statusBar = {};
+    this.statusBar.draw = function() {
+        viewController.drawStatusBar();
+        viewController.resetFont();
+    }
     this.completeCallback = completeCallback;
 }
 
@@ -39,6 +44,7 @@ LevelCompleteAnimation.prototype.frame = function() {
         }
         return;
     }
+    this.statusBar.draw();
     var instance = this;
     window.requestAnimationFrame(function() {
         instance.frame();

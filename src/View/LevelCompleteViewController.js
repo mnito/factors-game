@@ -51,6 +51,8 @@ LevelCompleteViewController.prototype.drawControlLabels = function() {
 };
 
 LevelCompleteViewController.prototype.draw = function() {
+    this.brush.textAlign = 'center';
+    this.brush.textBaseline = 'middle';
     this.drawResult();
     this.drawScore();
     this.drawControlLabels();
