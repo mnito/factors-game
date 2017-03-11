@@ -5,7 +5,7 @@ function GameController(levels, levelComponents, storageManager, canvas) {
     this.storageManager = storageManager;
     this.score = new Score([]);
     this.canvas = canvas;
-    this.levelSelectListener = new TapInput(new BoundingBox(this.canvas.width - 75, 0, 75, 75), canvas);
+    this.levelSelectListener = new TapInput(null, canvas);
     this.levelSelectListener.callback = function(x, y) {
         this.selectLevel();
         this.levelComponents.detachInputListeners();
@@ -18,6 +18,7 @@ GameController.prototype.startLevel = function(level) {
     var levelComponents = this.levelComponents;
     levelComponents.level = this.levels.get(level);
     var viewController = this.levelComponents.getViewController();
+    this.setLevelSelectBoundingBox(viewController);
     this.score.results = this.storageManager.getLevelResults();
     viewController.score = this.score;
     var inputController = this.levelComponents.getInputController();
@@ -50,4 +51,11 @@ GameController.prototype.selectLevel = function() {
     }.bind(this);
     inputController.listen();
     inputController.triggerInitial();
+};
+
+GameController.prototype.setLevelSelectBoundingBox = function(viewController) {
+    if(this.lastBlockSize !== viewController.blockSize) {
+        this.levelSelectListener.boundingBox = new BoundingBox(viewController.leftMargin + (viewController.blockSize + viewController.spacing) * 3, 0, viewController.blockSize, this.canvas.height * .10 );
+        this.lastBlockSize = viewController.blockSize;
+    }
 };
