@@ -18,8 +18,14 @@ LevelCompleteViewController.prototype.drawResult = function() {
     } else {
         throw "Puzzle is still ongoing. Level is not complete.";
     }
-    this.brush.font = 'bold ' + Math.min(canvas.width * .25, 100) + 'px Arial';
-    this.brush.fillText(result, canvas.width / 2, canvas.height * .15);
+    var fontSizeFactor = .35;
+    if(result === 'LOW!') {
+        fontSizeFactor = .3;
+    } else if( result === 'High') {
+        fontSizeFactor = .25;
+    }
+    this.brush.font = 'bolder ' + Math.min(this.canvas.height, this.canvas.width) * fontSizeFactor + 'px sans-serif';
+    this.brush.fillText(result, canvas.width / 2, canvas.height * .175);
 };
 
 LevelCompleteViewController.prototype.drawScore = function() {
@@ -33,15 +39,15 @@ LevelCompleteViewController.prototype.drawScore = function() {
         sixteenTotal = this.score.averageFrom(lowerBound, upperBound).toFixed(4);
     }
     catch(e){ }
-    this.brush.font = Math.min(canvas.width * .1, 40) + 'px Arial';
-    this.brush.fillText('AVG: ' + total, canvas.width / 2, canvas.height * .4);
-    this.brush.fillText('AVG[' + lowerBound + '-' + upperBound + ']: ' + sixteenTotal, canvas.width / 2, canvas.height * .5);
+    this.brush.font = Math.min(this.canvas.width, this.canvas.height) * .085 + 'px sans-serif';
+    this.brush.fillText('AVG: ' + total, canvas.width / 2, canvas.height * .475);
+    this.brush.fillText('AVG[' + lowerBound + '-' + upperBound + ']: ' + sixteenTotal, canvas.width / 2, canvas.height * .575);
 };
 
 LevelCompleteViewController.prototype.drawControlLabels = function() {
-    this.brush.font = 'bold '+ Math.min(canvas.width * .1, 40) + 'px Arial';
-    this.brush.fillText('NEXT >', canvas.width / 2, canvas.height * .65);
-    this.brush.fillText('< RETRY', canvas.width / 2, canvas.height * .75)
+    this.brush.font = 'bold '+ Math.min(this.canvas.width, this.canvas.height) * .1 + 'px sans-serif';
+    this.brush.fillText('< RETRY', canvas.width / 4, canvas.height * .875)
+    this.brush.fillText('NEXT >', 3 * (canvas.width / 4), canvas.height * .875);
 };
 
 LevelCompleteViewController.prototype.draw = function() {
