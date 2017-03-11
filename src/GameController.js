@@ -54,8 +54,10 @@ GameController.prototype.selectLevel = function() {
         viewController.draw(value, x, y, end);
     });
     inputController.onSelect = function(value) {
-        this.startLevel(value);
-        inputController.detach();
+        if(value > 0) {
+            this.startLevel(value);
+            inputController.detach();
+        }
     }.bind(this);
     inputController.listen();
     inputController.triggerInitial(this.storageManager.getLastPlayedLevel());
