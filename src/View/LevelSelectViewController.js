@@ -69,6 +69,7 @@ LevelSelectViewController.prototype.draw = function(value, x, y, end) {
     }
     this.brush.clearRect(0, 0, canvas.width, canvas.height);
     this.brush.fillStyle = blockColor;
+    this.brush.font = 'bold ' + this.blockSize * .5 + 'px Arial';
     this.drawLevelResults(value);
     this.drawNumber(value, x, y, end);
 };
