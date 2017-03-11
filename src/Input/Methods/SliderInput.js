@@ -119,10 +119,11 @@ SliderInput.prototype.setValue = function(event) {
     this.callback(this.value, x, null, true);
 };
 
-SliderInput.prototype.triggerInitial = function() {
-    var x = this.min * ((this.maxWidth - this.xPad * 2) / this.max) + this.xPad;
+SliderInput.prototype.triggerInitial = function(value) {
+    var x = Math.max(value, this.min) * ((this.maxWidth - this.xPad * 2) / this.max) + this.xPad;
     this.lastX = x;
-    this.callback(this.min, x, null, true);
+    this.value = value;
+    this.callback(value, x, null, true);
 };
 
 SliderInput.prototype.detach = function() {

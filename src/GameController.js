@@ -36,6 +36,7 @@ GameController.prototype.startLevel = function(level) {
         this.levelComponents.attachInputListeners();
         this.isListeningForInput = true;
     }
+    this.storageManager.setLastPlayedLevel(level);
     viewController.draw();
 };
 
@@ -50,7 +51,7 @@ GameController.prototype.selectLevel = function() {
         inputController.detach();
     }.bind(this);
     inputController.listen();
-    inputController.triggerInitial();
+    inputController.triggerInitial(this.storageManager.getLastPlayedLevel());
 };
 
 GameController.prototype.setLevelSelectBoundingBox = function(viewController) {
