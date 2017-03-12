@@ -1,29 +1,41 @@
-function LevelComponents(config, canvas, level) {
-    this.config = config;
+function LevelComponents(canvas, config, level) {
     this.canvas = canvas;
+    this.config = config;
     this.level = level;
+    this.brush = canvas.getContext('2d');
 }
 
-LevelComponents.prototype.getViewController = function() {
-    if(typeof this.viewController === 'undefined') {
-        this.viewController = new LevelViewController(this.canvas, 2, 'white', this.getCurrentLevel());
+LevelComponents.prototype.getView = function() {
+    if(typeof this.view === 'undefined') {
+        var renderRegion = new RenderRegion(0, this.canvas.height * .15, this.canvas.width, this.canvas.height * .85);
+        this.view = new LevelView(this.brush, renderRegion, 2, '#FFFFFF', this.getCurrentLevel());
     } else {
-        this.viewController.level = this.getCurrentLevel();
+        this.view.level = this.getCurrentLevel();
     }
     if(this.level.puzzle.original === 1) {
-        var tutorialController = new TutorialViewController(this.viewController);
-        this.viewController.onDraw = function() {
+        var tutorialController = new TutorialViewController(this.view);
+        this.view.onDraw = function() {
             tutorialController.draw();
         }.bind(this);
     } else {
-        this.viewController.onDraw = function() {};
+        this.view.onDraw = function() {};
     }
-    return this.viewController;
+    return this.view;
+};
+
+LevelComponents.prototype.getStatusBar = function(score) {
+    var view = this.view;
+    if(typeof this.statusBar === 'undefined') {
+        var renderRegion = new RenderRegion(view.leftMargin + view.spacing, 0, (view.blockSize + view.spacing) * 4, this.canvas.height * .15);
+        this.statusBar = new StatusBar(this.brush, renderRegion, view.blockSize / 3.75, score, this.getCurrentLevel());
+    }
+    this.statusBar.level = this.getCurrentLevel();
+    return this.statusBar;
 };
 
 LevelComponents.prototype.getInputController = function() {
     if(typeof this.inputController === 'undefined') {
-        this.inputController = new LevelInputController(this.getViewController());
+        this.inputController = new LevelInputController(this.getView());
     }
     return this.inputController;
 };
@@ -60,9 +72,9 @@ LevelComponents.prototype.detachInputListeners = function() {
 };
 
 LevelComponents.prototype.getCompleteAnimation = function(score) {
-    var viewController = this.getViewController();
-    return new LevelCompleteAnimation(viewController, function() {
-        var levelCompleteViewController = new LevelCompleteViewController(this.canvas, viewController.level, score, 'white');
+    var currentLevel = this.getCurrentLevel();
+    return new LevelCompleteAnimation(this.getView(), this.getStatusBar(), this.canvas, function() {
+        var levelCompleteViewController = new LevelCompleteViewController(this.canvas, currentLevel, score, '#FFFFFF');
         levelCompleteViewController.draw();
     });
 };

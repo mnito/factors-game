@@ -14,7 +14,7 @@ LevelInputController.prototype.left = function() {
   }
   this.index -= 1;
   this.viewController.liveIndex = this.index;
-  this.viewController.draw();
+  this.viewController.redraw();
 };
 
 LevelInputController.prototype.right = function() {
@@ -23,13 +23,13 @@ LevelInputController.prototype.right = function() {
   }
   this.index += 1;
   this.viewController.liveIndex = this.index;
-  this.viewController.draw();
+  this.viewController.redraw();
 };
 
 LevelInputController.prototype.down = function() {
   if(!this.viewController.level.puzzle.isComplete()) {
       this.viewController.level.puzzle.playIndex(this.index);
-      this.viewController.draw();
+      this.viewController.redraw();
   }
   if(this.viewController.level.puzzle.isComplete() && typeof this.onComplete === 'function') {
       this.onComplete(this.viewController.level);
@@ -38,5 +38,5 @@ LevelInputController.prototype.down = function() {
 
 LevelInputController.prototype.up = function() {
     this.viewController.level.puzzle.reset();
-    this.viewController.draw();
+    this.viewController.redraw();
 };

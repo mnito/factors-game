@@ -1,20 +1,17 @@
-function LevelCompleteAnimation( viewController, completeCallback ) {
-    this.canvas = viewController.canvas;
-    this.brush = viewController.brush;
-    this.history = viewController.level.puzzle.history;
-    this.spacing = viewController.spacing;
-    this.leftMargin = viewController.leftMargin;
-    var offset = viewController.offset + viewController.blockSize + viewController.spacing;
-    this.y = this.history.length * viewController.blockSize + offset + (viewController.spacing * this.history.length);
-    this.puzzle = viewController.level.puzzle;
-    this.numberColor = viewController.numberColor;
-    this.blockColor = viewController.level.palette.numberColor.toString();
-    this.size = viewController.blockSize;
-    this.statusBar = {};
-    this.statusBar.draw = function() {
-        viewController.drawStatusBar();
-        viewController.resetFont();
-    }
+function LevelCompleteAnimation( levelView, statusBar, canvas, completeCallback ) {
+    this.canvas = canvas;
+    this.brush = levelView.brush;
+    this.history = levelView.level.puzzle.history;
+    this.spacing = levelView.spacing;
+    this.leftMargin = levelView.leftMargin;
+    var offset = levelView.offset + levelView.blockSize + levelView.spacing;
+    this.y = this.history.length * levelView.blockSize + offset + (levelView.spacing * this.history.length);
+    this.puzzle = levelView.level.puzzle;
+    this.numberColor = levelView.numberColor;
+    this.blockColor = levelView.level.palette.numberColor.toString();
+    this.size = levelView.blockSize;
+    this.statusBar = statusBar;
+    this.levelView = levelView;
     this.completeCallback = completeCallback;
 }
 
@@ -35,6 +32,7 @@ LevelCompleteAnimation.prototype.frame = function() {
     brush.clearRect(0, 0, this.canvas.width, this.canvas.height);
     brush.fillRect(this.x, this.y, this.size, this.size);
     if(this.x >= 0) {
+        this.levelView.resetFont();
         brush.fillStyle = this.numberColor;
         brush.fillText('' + number, this.x + this.size / 2, this.y + this.size / 2);
     }

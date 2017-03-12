@@ -5,6 +5,9 @@ function GameController(levels, levelComponents, storageManager, canvas) {
     this.storageManager = storageManager;
     this.score = new Score([]);
     this.canvas = canvas;
+    this.clear = function() {
+        canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
+    }
     this.levelSelectListener = new TapInput(null, canvas);
     this.levelSelectListener.callback = function(x, y) {
         this.selectLevel();
@@ -17,10 +20,10 @@ function GameController(levels, levelComponents, storageManager, canvas) {
 GameController.prototype.startLevel = function(level) {
     var levelComponents = this.levelComponents;
     levelComponents.level = this.levels.get(level);
-    var viewController = this.levelComponents.getViewController();
-    this.setLevelSelectBoundingBox(viewController);
+    var view = this.levelComponents.getView();
+    this.setLevelSelectBoundingBox(view);
     this.score.results = this.storageManager.getLevelResults();
-    viewController.score = this.score;
+    var statusBar = this.levelComponents.getStatusBar(this.score);
     var inputController = this.levelComponents.getInputController();
     levelComponents.setInputControllers(inputController);
     inputController.onComplete = function() {
@@ -44,7 +47,9 @@ GameController.prototype.startLevel = function(level) {
         this.isListeningForInput = true;
     }
     this.storageManager.setLastPlayedLevel(level);
-    viewController.draw();
+    this.clear();
+    statusBar.draw();
+    view.draw();
 };
 
 GameController.prototype.selectLevel = function() {
