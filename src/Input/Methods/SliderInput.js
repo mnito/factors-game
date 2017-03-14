@@ -131,17 +131,3 @@ SliderInput.prototype.detach = function() {
     this.element.removeEventListener('touchend', this.listeners.touchEnd);
     document.removeEventListener('keydown', this.listeners.keyDown);
 };
-/*
-sliderInputController.beforeTouchValueChange(function(event) {
-    var deltaX = event.xEnd - event.xStart;
-    var deltaY = event.yEnd - event.yStart;
-
-    var isDownSwipe = Math.abs(deltaY) > Math.abs(deltaX) && deltaY > 50;
-
-    if(isDownSwipe) {
-        alert("It's a down swipe! Value: " + event.currentValue);
-        return true;
-    }
-});
-sliderInputController.listen();
-*/
