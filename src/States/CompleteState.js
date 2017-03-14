@@ -6,7 +6,8 @@ function CompleteState(game) {
     this.levelCompleteController = new LevelCompleteController(game.storageManager, function() {
         game.transition('PLAYING');
     });
-    this.inputMethod = new KeyboardInput(this.levelCompleteController);
+    this.keyboardInputMethod = new KeyboardInput(this.levelCompleteController);
+    this.touchInputMethod = new TouchInput(game.canvas, this.levelCompleteController);
 }
 
 CompleteState.prototype.onEnter = function(context) {
@@ -26,14 +27,17 @@ CompleteState.prototype.onEnter = function(context) {
     this.animation.statusBar = context.statusBar;
     this.levelCompleteController.level = context.level;
     var completeView = this.completeView;
-    var inputMethod = this.inputMethod;
+    var keyboardInputMethod = this.keyboardInputMethod;
+    var touchInputMethod = this.touchInputMethod;
     this.animation.run(function() {
         completeView.draw();
-        inputMethod.listen();
+        keyboardInputMethod.listen();
+        touchInputMethod.listen();
     });
 };
 
 CompleteState.prototype.onLeave = function() {
-    this.inputMethod.detach();
+    this.keyboardInputMethod.detach();
+    this.touchInputMethod.detach();
     return { level: this.game.levels.get(this.game.storageManager.getCurrentLevel()) };
 };

@@ -5,9 +5,11 @@ function PlayingState(game) {
     this.statusBar = new StatusBar(game.brush, new RenderRegion());
     this.statusBar.renderRegion.height = game.canvas.height * .15;
     this.levelController = new LevelController();
-    this.inputMethod = new KeyboardInput(this.levelController, function() {
+    var afterInput = function() {
         this.levelView.redraw();
-    }.bind(this));
+    }.bind(this);
+    this.levelKeyboardInputMethod = new KeyboardInput(this.levelController, afterInput);
+    this.levelTouchInputMethod = new TouchInput(game.canvas, this.levelController, afterInput);
     this.selectTransitionInputMethod = new TapInput(game.canvas, function() {
         game.transition('SELECT');
     });
@@ -21,7 +23,8 @@ PlayingState.prototype.onEnter = function(context) {
     var level = context && context.level ? context.level : this.game.levels.get(this.game.storageManager.getCurrentLevel());
     this.levelController.level = level;
     this.levelView.level = level;
-    this.inputMethod.listen();
+    this.levelKeyboardInputMethod.listen();
+    this.levelTouchInputMethod.listen();
     this.levelView.draw();
 
     this.statusBar.renderRegion.x = this.levelView.leftMargin + this.levelView.spacing;
@@ -37,7 +40,8 @@ PlayingState.prototype.onEnter = function(context) {
 };
 
 PlayingState.prototype.onLeave = function() {
-    this.inputMethod.detach();
+    this.levelKeyboardInputMethod.detach();
+    this.levelTouchInputMethod.detach();
     this.selectTransitionInputMethod.detach();
     return { level: this.levelView.level, levelView: this.levelView, statusBar: this.statusBar };
 };
