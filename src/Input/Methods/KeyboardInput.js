@@ -1,9 +1,11 @@
-function KeyboardInput(inputController) {
+function KeyboardInput(inputController, afterInput) {
   this.inputController = inputController;
+  this.afterInput = afterInput;
   this.listeners = { keyDown: this.listener.bind(this) };
 };
 
 KeyboardInput.prototype.listener = function(e) {
+    console.log(e);
    switch(e.keyCode) {
      case 37 :
      case 65 :
@@ -29,6 +31,9 @@ KeyboardInput.prototype.listener = function(e) {
        e.preventDefault();
        this.inputController.right();
        break;
+   }
+   if(typeof this.afterInput === 'function') {
+       this.afterInput();
    }
 };
 

@@ -1,57 +1,60 @@
-function LevelCompleteAnimation( levelView, statusBar, canvas, completeCallback ) {
-    this.canvas = canvas;
-    this.brush = levelView.brush;
-    this.history = levelView.level.puzzle.history;
-    this.spacing = levelView.spacing;
-    this.leftMargin = levelView.leftMargin;
-    var offset = levelView.offset + levelView.blockSize + levelView.spacing;
-    this.y = this.history.length * levelView.blockSize + offset + (levelView.spacing * this.history.length);
-    this.puzzle = levelView.level.puzzle;
-    this.numberColor = levelView.numberColor;
-    this.blockColor = levelView.level.palette.numberColor.toString();
-    this.size = levelView.blockSize;
-    this.statusBar = statusBar;
+function LevelCompleteAnimation( brush, renderRegion, level, levelView, statusBar, onComplete) {
+    this.brush = brush;
+    this.renderRegion = renderRegion;
+    this.level = level;
     this.levelView = levelView;
-    this.completeCallback = completeCallback;
+    this.statusBar = statusBar;
+    this.onComplete = onComplete;
 }
 
 LevelCompleteAnimation.prototype.frame = function() {
     var brush = this.brush;
-    var number = this.puzzle.number;
-    if(this.y < this.canvas.height - this.size) {
+    var number = this.level.puzzle.number;
+    if(this.y < this.renderRegion.height - this.blockSize) {
         this.y += 30;
-    } else if( this.y !== this.canvas.height - this.size) {
-        this.y = this.canvas.height - this.size;
+    } else if(this.y !== this.renderRegion.height - this.blockSize) {
+        this.y = this.renderRegion.height - this.blockSize;
     } else if(this.x < 0) {
-        this.size += 30;
+        this.blockSize += 30;
         this.y -= 30;
     } else {
-        this.x -= 13 + (this.canvas.width * .005);
+        this.x -= 13 + (this.renderRegion.width * .005);
     }
     brush.fillStyle = this.blockColor;
-    brush.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    brush.fillRect(this.x, this.y, this.size, this.size);
+    brush.clearRect(0, 0, this.renderRegion.width, this.renderRegion.height);
+    brush.fillRect(this.x, this.y, this.blockSize, this.blockSize);
     if(this.x >= 0) {
-        this.levelView.resetFont();
+        this.resetFont();
         brush.fillStyle = this.numberColor;
-        brush.fillText('' + number, this.x + this.size / 2, this.y + this.size / 2);
+        brush.fillText('' + number, this.x + this.blockSize / 2, this.y + this.blockSize / 2);
     }
-    if(this.size > this.canvas.width && this.size > this.canvas.height) {
-        if(typeof this.completeCallback !== 'undefined' ) {
-            this.completeCallback();
+    if(this.blockSize > this.renderRegion.width && this.blockSize > this.renderRegion.height) {
+        if(typeof this.onComplete !== 'undefined' ) {
+            this.onComplete();
         }
         return;
     }
-    this.statusBar.draw();
+    if(this.statusBar && typeof this.statusBar.draw === 'function') {
+        this.statusBar.draw();
+    }
     var instance = this;
     window.requestAnimationFrame(function() {
         instance.frame();
     });
 };
 
-LevelCompleteAnimation.prototype.run = function() {
-    var lastIndex = this.history.slice(-1)[0];
-    this.x = lastIndex * this.size + (this.spacing * lastIndex) + this.leftMargin;
+LevelCompleteAnimation.prototype.run = function(onComplete) {
+    if(typeof onComplete !== 'undefined') {
+        this.onComplete = onComplete;
+    }
+    var lastIndex = this.level.puzzle.history.slice(-1)[0];
+    this.x = lastIndex * this.levelView.blockSize + (this.levelView.spacing * lastIndex) + this.levelView.leftMargin;
+    var offset = this.levelView.renderRegion.y + this.levelView.blockSize + this.levelView.spacing;
+    this.y = this.level.puzzle.history.length * this.levelView.blockSize + offset + (this.levelView.spacing * this.level.puzzle.history.length);
+    this.blockSize = this.levelView.blockSize;
+    this.blockColor = this.level.palette.numberColor.toString();
+    this.numberColor = this.levelView.numberColor;
+    this.resetFont = this.levelView.resetFont;
     var instance = this;
     setTimeout(function() { instance.frame(); }, 500);
 };

@@ -19,10 +19,8 @@ StatusBar.prototype.draw = function() {
             //
         }
     }
-    //this.leftMargin + this.spacing, 0;
     this.brush.fillText(levelStr, this.renderRegion.x, this.renderRegion.y);
     this.brush.textAlign = 'right';
-    //this.leftMargin + (this.blockSize + this.spacing) * 4
     this.brush.fillText('[select]', this.renderRegion.x + this.renderRegion.width, this.renderRegion.y);
 };
 

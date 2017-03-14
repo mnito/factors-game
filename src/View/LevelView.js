@@ -4,8 +4,7 @@ function LevelView(brush, renderRegion, spacing, numberColor, level) {
    this.spacing = spacing;
    this.numberColor = numberColor;
    this.level = level;
-   this.determineBlockSize();
-   this.determineLeftMargin();
+   this.last = this.level;
 }
 
 LevelView.prototype.resetFont = function() {
@@ -47,29 +46,31 @@ LevelView.prototype.drawBoard = function() {
 };
 
 LevelView.prototype.drawNumber = function() {
-    var lastIndex = this.liveIndex;
-    if( typeof lastIndex === 'undefined' ) {
-        lastIndex = this.level.puzzle.history.slice(-1)[0];
-        if( typeof lastIndex === 'undefined' ) {
-            lastIndex = Math.floor(this.level.puzzle.board.columns / 2);
-        }
-    }
+    var index = this.level.index;
     var currentRow = this.level.puzzle.currentRow;
-    var x = lastIndex * this.blockSize + ( this.spacing * lastIndex ) + this.leftMargin;
+    var x = index * this.blockSize + ( this.spacing * index ) + this.leftMargin;
     var y = currentRow * this.blockSize + this.renderRegion.y + (this.spacing * currentRow);
     this.brush.fillStyle = this.level.palette.numberColor.toString();
     this.brush.fillRect(x, y, this.blockSize, this.blockSize);
     this.brush.fillStyle = this.numberColor;
+    console.log(this.level);
     this.brush.fillText('' + this.level.puzzle.number, x + this.blockSize / 2, y + this.blockSize / 2);
 };
 
-LevelView.onDraw = function(levelViewController) {};
-
 LevelView.prototype.draw = function() {
+    if(typeof this.level === 'undefined') {
+        return;
+    }
+
+    if(typeof this.last === 'undefined' || this.last.columns !== this.level.columns || this.last.rows !== this.level.rows) {
+        this.determineBlockSize();
+        this.determineLeftMargin();
+        this.last = this.level;
+    }
+
     this.resetFont();
     this.drawNumber();
     this.drawBoard();
-    this.onDraw(this);
 };
 
 LevelView.prototype.redraw = function() {
