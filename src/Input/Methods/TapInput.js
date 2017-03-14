@@ -1,7 +1,7 @@
-function TapInput(boundingBox, element, callback) {
-    this.boundingBox = boundingBox;
+function TapInput(element, onTap, boundingBox) {
     this.element = typeof element !== 'undefined' ? element : document;
-    this.callback = callback;
+    this.onTap = onTap;
+    this.boundingBox = boundingBox;
     this.upCount = 0;
     this.listeners = {
         touchStart: this.tap.bind(this),
@@ -18,8 +18,8 @@ TapInput.prototype.tap = function(event) {
     event.preventDefault();
     var x = event.touches[0].clientX;
     var y = event.touches[0].clientY;
-    if(this.boundingBox.isPointWithin(x, y)) {
-        this.callback(x, y);
+    if(this.boundingBox.isPointWithin(x, y) && typeof this.onTap === 'function') {
+        this.onTap(x, y);
     }
 };
 
@@ -30,7 +30,9 @@ TapInput.prototype.doubleUp = function(event) {
         this.upCount = 0;
     }
     if(this.upCount > 1) {
-        this.callback();
+        if(typeof this.onTap === 'function') {
+            this.onTap();
+        }
         this.upCount = 0;
     }
 };

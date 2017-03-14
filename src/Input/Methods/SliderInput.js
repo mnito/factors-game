@@ -1,12 +1,12 @@
-function SliderInput(element, min, max, xPad, yMin, yMax, callback) {
+function SliderInput(element, callback, xPad, yMin, yMax, min, max) {
     this.element = typeof element !== 'undefined' ? element : document;
-    this.min = min;
-    this.max = max;
     this.maxWidth = element.width || element.offsetWidth || element.clientWidth || window.innerWidth;
+    this.callback = callback;
     this.xPad = xPad;
     this.yMin = yMin;
     this.yMax = yMax;
-    this.callback = callback;
+    this.min = min;
+    this.max = max;
     this.value = min;
     this.listeners = {
         touchStart: this.startTouch.bind(this),

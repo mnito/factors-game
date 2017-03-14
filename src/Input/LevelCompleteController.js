@@ -1,11 +1,20 @@
-function LevelCompleteController(levelController) {
-    this.levelController = levelController;
+function LevelCompleteController(storageManager, onSelect, level) {
+    this.storageManager = storageManager;
+    this.onSelect = onSelect;
+    this.level = level;
 };
 
 LevelCompleteController.prototype.left = function() {
-    this.levelController.retry();
+    if(typeof this.onSelect === 'function') {
+        this.onSelect(this.level);
+    }
 };
 
 LevelCompleteController.prototype.right = function() {
-    this.levelController.next();
+    if(this.level.getNumber() === this.storageManager.getCurrentLevel()) {
+        this.storageManager.incrementCurrentLevel();
+    }
+    if(typeof this.onSelect === 'function') {
+        this.onSelect(this.level + 1);
+    }
 };

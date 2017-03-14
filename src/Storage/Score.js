@@ -1,9 +1,16 @@
 function Score(results) {
-  this.results = results;
+    this.results = results;
 }
 
+Score.prototype.getResults = function() {
+    if(typeof this.results === 'function') {
+        return this.results();
+    }
+    return this.results;
+};
+
 Score.prototype.totalLevelsPlayed = function() {
-  return this.results.length;
+  return this.getResults().length;
 };
 
 Score.prototype.compositeFrom = function(firstLevel, lastLevel) {
@@ -19,7 +26,7 @@ Score.prototype.compositeFrom = function(firstLevel, lastLevel) {
   }
   var composite = 0;
   for(var i = firstLevel - 1; i < lastLevel; i += 1) {
-    composite += this.results[i].endNumber;
+    composite += this.getResults()[i].endNumber;
   }
   return composite;
 };

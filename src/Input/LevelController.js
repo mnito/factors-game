@@ -1,6 +1,6 @@
-function LevelController(level, onComplete) {
-  this.level = level;
+function LevelController(onComplete, level) {
   this.onComplete = onComplete;
+  this.level = level;
 };
 
 LevelController.prototype.left = function() {
