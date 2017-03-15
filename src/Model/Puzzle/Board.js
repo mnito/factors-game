@@ -54,18 +54,19 @@ Board.prototype.get = function( row, column ) {
 /**
  * Implements iterable protocol to enable looping with for...of
  */
-Board.prototype[Symbol.iterator] = function () {
-    var board = this.board;
-    return {
-        next: function() {
-            if( this._pos >= board.length) {
-               return {done: true};
-            }
-            var next = { value: board[this._pos], done: false };
-            this._pos += 1;
-            return next;
-
-        },
-        _pos: 0
+if(typeof Symbol !== 'undefined' && typeof Symbol.iterator !== 'undefined') {
+    Board.prototype[Symbol.iterator] = function () {
+        var board = this.board;
+        return {
+            next: function() {
+                if( this._pos >= board.length) {
+                   return {done: true};
+                }
+                var next = { value: board[this._pos], done: false };
+                this._pos += 1;
+                return next;
+            },
+            _pos: 0
+        };
     };
-};
+}

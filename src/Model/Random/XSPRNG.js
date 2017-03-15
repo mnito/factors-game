@@ -5,7 +5,8 @@ function XSPRNG(seed) {
 }
 
 XSPRNG.prototype.seed = function(seed) {
-    if(!Number.isInteger(seed)) {
+    //!Number.isInteger(seed)
+    if((seed ^ 0) !== seed) {
         throw "Seed should be integer.";
     }
     this.original = seed;
