@@ -18,3 +18,7 @@ LevelCompleteController.prototype.right = function() {
         this.onSelect(this.level.getNumber() + 1);
     }
 };
+
+LevelCompleteController.prototype.up = function() {};
+
+LevelCompleteController.prototype.down = function() {};
