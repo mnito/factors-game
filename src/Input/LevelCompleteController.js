@@ -6,7 +6,7 @@ function LevelCompleteController(storageManager, onSelect, level) {
 
 LevelCompleteController.prototype.left = function() {
     if(typeof this.onSelect === 'function') {
-        this.onSelect(this.level);
+        this.onSelect(this.level.getNumber());
     }
 };
 
@@ -15,6 +15,6 @@ LevelCompleteController.prototype.right = function() {
         this.storageManager.incrementCurrentLevel();
     }
     if(typeof this.onSelect === 'function') {
-        this.onSelect(this.level + 1);
+        this.onSelect(this.level.getNumber() + 1);
     }
 };

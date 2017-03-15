@@ -3,9 +3,10 @@ function CompleteState(game) {
     var renderRegion = new RenderRegion(0, 0, game.canvas.width, game.canvas.height);
     this.animation = new LevelCompleteAnimation(game.brush, renderRegion);
     this.completeView = new LevelCompleteView(game.brush, renderRegion, game.config.numberColor);
-    this.levelCompleteController = new LevelCompleteController(game.storageManager, function() {
+    this.levelCompleteController = new LevelCompleteController(game.storageManager, function(levelNumber) {
+        this.nextLevel = game.levels.get(levelNumber);
         game.transition('PLAYING');
-    });
+    }.bind(this));
     this.keyboardInputMethod = new KeyboardInput(this.levelCompleteController);
     this.touchInputMethod = new TouchInput(game.canvas, this.levelCompleteController);
 }
@@ -39,5 +40,5 @@ CompleteState.prototype.onEnter = function(context) {
 CompleteState.prototype.onLeave = function() {
     this.keyboardInputMethod.detach();
     this.touchInputMethod.detach();
-    return { level: this.game.levels.get(this.game.storageManager.getCurrentLevel()) };
+    return { level: this.nextLevel };
 };
