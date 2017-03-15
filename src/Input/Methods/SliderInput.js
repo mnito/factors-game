@@ -33,18 +33,12 @@ SliderInput.prototype.startTouch = function(event) {
 SliderInput.prototype.determineValue = function(event) {
     event.preventDefault();
     event.stopPropagation();
-    if( this.xStart === null || this.yStart < this.yMin || this.yStart > this.yMax ) {
+    if(this.xStart === null || this.yStart < this.yMin || this.yStart > this.yMax) {
         return;
     }
     var xEnd = event.touches[0].clientX;
     var yEnd = event.touches[0].clientY;
     if(Math.abs(this.yStart - yEnd) > Math.abs(this.xStart - xEnd) - 8 && (yEnd - this.yStart > 0)) {
-        if( yEnd - this.yStart > 20 ) {
-            this.onSelect(this.value);
-        }
-        return;
-    }
-    if(this.dispatchBeforeTouchValueChange(this.value, xEnd, yEnd)) {
         return;
     }
     var value = Math.max(this.min, Math.min(Math.round((((xEnd - this.xPad) * (this.max - this.min)) / (this.maxWidth - this.xPad * 2)) + this.min), this.max));
@@ -59,17 +53,15 @@ SliderInput.prototype.determineValue = function(event) {
 };
 
 SliderInput.prototype.endTouch = function(event) {
+    var xEnd = event.changedTouches[0].clientX;
+    var yEnd = event.changedTouches[0].clientY;
+    if(Math.abs(this.yStart - yEnd) > Math.abs(this.xStart - xEnd) - 8 && (yEnd - this.yStart > 20)) {
+        return this.onSelect(this.value);
+    }
     this.xStart = null;
     this.yStart = null;
     this.callback(this.value, this.lastX, this.lastY, true);
-}
-
-SliderInput.prototype.dispatchBeforeTouchValueChange = function(value, xEnd, yEnd) {
-    if(!(typeof this.beforeTouchValueChange === 'function')) {
-        return;
-    }
-    return this.beforeTouchValueChange({currentValue: value, xStart: this.xStart, yStart: this.yStart, xEnd: xEnd, yEnd: yEnd });
-}
+};
 
 SliderInput.prototype.onSelect = function(value) {};
 
