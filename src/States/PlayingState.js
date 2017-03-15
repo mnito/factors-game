@@ -15,7 +15,7 @@ function PlayingState(game) {
     });
     this.levelController.onComplete = function() {
         game.transition('COMPLETE');
-    }
+    };
 }
 
 PlayingState.prototype.onEnter = function(context) {
