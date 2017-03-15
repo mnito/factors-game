@@ -44,11 +44,3 @@ StorageManager.prototype.setLevelResult = function(level, result) {
 StorageManager.prototype.getLevelResult = function(level) {
     return this.getLevelResults()[level - 1];
 };
-
-StorageManager.prototype.setLastPlayedLevel = function(level) {
-    this.storageMethod.setItem('lastPlayedLevel', level);
-};
-
-StorageManager.prototype.getLastPlayedLevel = function(level) {
-    return parseInt(this.storageMethod.getItem('lastPlayedLevel')) || 0;
-};
