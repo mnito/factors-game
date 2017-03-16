@@ -9,6 +9,13 @@ function CompleteState(game) {
     }.bind(this));
     this.keyboardInputMethod = new KeyboardInput(this.levelCompleteController);
     this.touchInputMethod = new TouchInput(game.canvas, this.levelCompleteController);
+    var leftTapRegion = new TapRegion(new BoundingBox(0, renderRegion.height * .825, renderRegion.width * .5 - 1, renderRegion.height * .1), function() {
+        this.levelCompleteController.left();
+    }.bind(this));
+    var rightTapRegion = new TapRegion(new BoundingBox(renderRegion.width * .5 + 1, renderRegion.height * .825, renderRegion.width * .5 - 1, renderRegion.height * .1), function() {
+        this.levelCompleteController.right();
+    }.bind(this));
+    this.tapInputMethod = new TapInput(canvas, [leftTapRegion, rightTapRegion]);
 }
 
 CompleteState.prototype.onEnter = function(context) {
@@ -30,15 +37,18 @@ CompleteState.prototype.onEnter = function(context) {
     var completeView = this.completeView;
     var keyboardInputMethod = this.keyboardInputMethod;
     var touchInputMethod = this.touchInputMethod;
+    var tapInputMethod = this.tapInputMethod;
     this.animation.run(function() {
         completeView.draw();
         keyboardInputMethod.listen();
         touchInputMethod.listen();
+        tapInputMethod.listen();
     });
 };
 
 CompleteState.prototype.onLeave = function() {
     this.keyboardInputMethod.detach();
     this.touchInputMethod.detach();
+    this.tapInputMethod.detach();
     return { level: this.nextLevel };
 };
