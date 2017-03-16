@@ -1,4 +1,4 @@
-function TouchInput(element, inputController, afterInput) {
+function SwipeInput(element, inputController, afterInput) {
     this.element = typeof element !== 'undefined' ? element : document;
     this.inputController = inputController;
     this.afterInput = afterInput;
@@ -8,18 +8,18 @@ function TouchInput(element, inputController, afterInput) {
     };
 }
 
-TouchInput.prototype.listen = function() {
+SwipeInput.prototype.listen = function() {
     this.element.addEventListener('touchstart', this.listeners.touchStart);
     this.element.addEventListener('touchmove', this.listeners.touchMove);
 };
 
-TouchInput.prototype.startTouch = function(event) {
+SwipeInput.prototype.startTouch = function(event) {
     event.preventDefault();
     this.xStart = event.touches[0].clientX;
     this.yStart = event.touches[0].clientY;
 };
 
-TouchInput.prototype.detectSwipe = function(event) {
+SwipeInput.prototype.detectSwipe = function(event) {
     event.preventDefault();
     if( this.xStart === null || this.yStart === null) {
         return;
@@ -47,7 +47,7 @@ TouchInput.prototype.detectSwipe = function(event) {
     }
 };
 
-TouchInput.prototype.detach = function() {
+SwipeInput.prototype.detach = function() {
     this.element.removeEventListener('touchstart', this.listeners.touchStart);
     this.element.removeEventListener('touchmove', this.listeners.touchMove);
 };

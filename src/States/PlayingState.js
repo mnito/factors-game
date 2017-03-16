@@ -9,7 +9,7 @@ function PlayingState(game) {
         this.levelView.redraw();
     }.bind(this);
     this.levelKeyboardInputMethod = new KeyboardInput(this.levelController, afterInput);
-    this.levelTouchInputMethod = new TouchInput(game.canvas, this.levelController, afterInput);
+    this.levelTouchInputMethod = new SwipeInput(game.canvas, this.levelController, afterInput);
     this.selectTransitionTouchInputMethod = new TapInput(game.canvas, [new TapRegion(null, function() {
         game.transition('SELECT');
     })]);

@@ -8,7 +8,7 @@ function CompleteState(game) {
         game.transition('PLAYING');
     }.bind(this));
     this.keyboardInputMethod = new KeyboardInput(this.levelCompleteController);
-    this.touchInputMethod = new TouchInput(game.canvas, this.levelCompleteController);
+    this.swipeInputMethod = new SwipeInput(game.canvas, this.levelCompleteController);
     var leftTapRegion = new TapRegion(new BoundingBox(0, renderRegion.height * .825, renderRegion.width * .5 - 1, renderRegion.height * .1), function() {
         this.levelCompleteController.left();
     }.bind(this));
@@ -36,19 +36,19 @@ CompleteState.prototype.onEnter = function(context) {
     this.levelCompleteController.level = context.level;
     var completeView = this.completeView;
     var keyboardInputMethod = this.keyboardInputMethod;
-    var touchInputMethod = this.touchInputMethod;
+    var swipeInputMethod = this.swipeInputMethod;
     var tapInputMethod = this.tapInputMethod;
     this.animation.run(function() {
         completeView.draw();
         keyboardInputMethod.listen();
-        touchInputMethod.listen();
+        swipeInputMethod.listen();
         tapInputMethod.listen();
     });
 };
 
 CompleteState.prototype.onLeave = function() {
     this.keyboardInputMethod.detach();
-    this.touchInputMethod.detach();
+    this.swipeInputMethod.detach();
     this.tapInputMethod.detach();
     return { level: this.nextLevel };
 };
