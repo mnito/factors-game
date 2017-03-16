@@ -4,14 +4,14 @@ function LevelController(onComplete, level) {
 };
 
 LevelController.prototype.left = function() {
-  if( this.index === 0 ) {
+  if(this.level.index === 0) {
     return;
   }
   this.level.index -= 1;
 };
 
 LevelController.prototype.right = function() {
-  if(this.index === this.level.puzzle.board.columns - 1) {
+  if(this.level.index === this.level.puzzle.board.columns - 1) {
     return;
   }
   this.level.index += 1;
