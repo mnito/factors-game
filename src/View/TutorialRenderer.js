@@ -1,4 +1,4 @@
-function TutorialViewController(brush, renderRegion, textColor, blockColor, borderColor, level) {
+function TutorialRenderer(brush, renderRegion, textColor, blockColor, borderColor, level) {
     this.brush = brush;
     this.renderRegion = renderRegion;
     this.textColor = textColor;
@@ -19,14 +19,14 @@ function TutorialViewController(brush, renderRegion, textColor, blockColor, bord
     this.currentLine = '';
 }
 
-TutorialViewController.prototype.resetFont = function() {
+TutorialRenderer.prototype.resetFont = function() {
     this.brush.font = 'bold ' + this.renderRegion.width * .05 + 'px sans-serif';
     this.brush.textAlign = 'center';
     this.brush.textBaseline = 'middle'
     this.brush.fillStyle = this.textColor;
 };
 
-TutorialViewController.prototype.draw = function() {
+TutorialRenderer.prototype.draw = function() {
     this.resetFont();
     var line;
     if(this.initial) {
@@ -46,7 +46,7 @@ TutorialViewController.prototype.draw = function() {
     this.drawLine(line);
 };
 
-TutorialViewController.prototype.drawLine = function(text) {
+TutorialRenderer.prototype.drawLine = function(text) {
     this.brush.fillStyle = this.blockColor;
     var x = this.renderRegion.x;
     var y = this.renderRegion.y;

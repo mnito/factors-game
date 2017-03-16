@@ -2,7 +2,7 @@ function TutorialState(game) {
     this.game = game;
     this.playingState = new PlayingState(game);
     var renderRegion = new RenderRegion(null, game.canvas.height * .005, null, game.canvas.height * .10);
-    var tutorial = new TutorialViewController(game.brush, renderRegion, game.config.textColor, game.config.textBackground);
+    var tutorial = new TutorialRenderer(game.brush, renderRegion, game.config.textColor, game.config.textBackground);
     this.tutorial = tutorial;
     var afterInput = this.playingState.levelKeyboardInputMethod.afterInput;
     var tutorialAfterInput = function() {
