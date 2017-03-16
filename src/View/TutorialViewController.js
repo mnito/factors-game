@@ -1,37 +1,59 @@
-function TutorialViewController(levelViewController) {
-    this.levelViewController = levelViewController;
-    this.canvas = levelViewController.canvas;
-    this.brush = levelViewController.canvas.getContext('2d');
+function TutorialViewController(brush, renderRegion, textColor, blockColor, borderColor, level) {
+    this.brush = brush;
+    this.renderRegion = renderRegion;
+    this.textColor = textColor;
+    this.blockColor = blockColor;
+    this.borderColor = borderColor || textColor;
+    this.level = level;
+
+    this.initial = true;
+    this.up = false;
+    this.done = false;
+
+    this.lines = [
+        'Swipe or type left or right.',
+        'Swipe or type down to make a move.',
+        'Swipe or type up to start over.',
+        'Factors divide. Others add. Go for 1.'
+    ];
+    this.currentLine = '';
 }
 
 TutorialViewController.prototype.resetFont = function() {
-    this.brush.font = this.canvas.width * .03 + 'px Arial';
+    this.brush.font = 'bold ' + this.renderRegion.width * .05 + 'px sans-serif';
     this.brush.textAlign = 'center';
     this.brush.textBaseline = 'middle'
-    this.brush.fillStyle = 'white';
+    this.brush.fillStyle = this.textColor;
 };
 
 TutorialViewController.prototype.draw = function() {
     this.resetFont();
-    var brush = this.brush;
-    var blockHasMoved = (typeof this.liveIndex) !== 'undefined';
-    if(!this.blockHasMoved()) {
-        brush.fillText('Swipe or type left or right.', this.canvas.width / 2, this.canvas.height * .05);
-    } else if(!this.firstMoveMade()) {
-        brush.fillText('Swipe or type down to make a move.', this.canvas.width / 2, this.canvas.height * .05);
+    var line;
+    if(this.initial) {
+        line = this.lines[0];
+    } else if(this.level.puzzle.history === [] || this.level.puzzle.history.length === 0 && !this.up) {
+        line = this.lines[1];
+    } else if(this.level.puzzle.history.length > 0 && !this.done) {
+        line = this.lines[2];
+        this.up = true;
     } else {
-        brush.fillText('1 is not divisible by your choice.', this.canvas.width / 2, this.canvas.height * .05);
-        brush.fillText('Only factors of your current number will cause division.', this.canvas.width / 2, this.canvas.height * .1);
-        brush.fillText('All other numbers will cause addition.', this.canvas.width / 2, this.canvas.height * .15);
-        brush.fillText('Use this to your advantage.', this.canvas.width / 2, this.canvas.height * .2);
-        brush.fillText('Your goal is to get to 1 or close. Happy factoring!', this.canvas.width / 2, this.canvas.height * .25);
+        line = this.lines[3];
+        this.done = true;
     }
+    if(line === this.currentLine || typeof line === 'undefined') {
+        return;
+    }
+    this.drawLine(line);
 };
 
-TutorialViewController.prototype.blockHasMoved = function() {
-    return (typeof this.levelViewController.liveIndex) !== 'undefined';
-};
-
-TutorialViewController.prototype.firstMoveMade = function() {
-    return (typeof this.levelViewController.level.puzzle.history.slice(-1)[0]) !== 'undefined';
+TutorialViewController.prototype.drawLine = function(text) {
+    this.brush.fillStyle = this.blockColor;
+    var x = this.renderRegion.x;
+    var y = this.renderRegion.y;
+    var width = this.renderRegion.width;
+    var height = this.renderRegion.height;
+    this.brush.fillRect(x, y, width, height);
+    this.brush.strokeRect(x, y, width, height);
+    this.brush.fillStyle = this.textColor;
+    this.brush.fillText(text, x + (width / 2), y + (height / 2));
 };

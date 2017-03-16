@@ -10,6 +10,7 @@ function FactorsGame(levels, config, storageManager, score, canvas) {
     };
 
     this.states = {
+        TUTORIAL: new TutorialState(this),
         PLAYING: new PlayingState(this),
         COMPLETE: new CompleteState(this),
         SELECT: new SelectState(this)
@@ -18,7 +19,8 @@ function FactorsGame(levels, config, storageManager, score, canvas) {
 }
 
 FactorsGame.prototype.start = function() {
-    this.transition('PLAYING');
+    var completedTutorial = this.storageManager.getCurrentLevel() !== 1;
+    this.transition(completedTutorial ? 'PLAYING' : 'TUTORIAL');
 };
 
 FactorsGame.prototype.transition = function(nextState) {
