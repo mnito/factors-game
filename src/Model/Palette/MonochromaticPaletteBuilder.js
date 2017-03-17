@@ -1,15 +1,15 @@
-function MonochromaticPaletteBuilder(hue, saturation) {
+function MonochromaticPaletteBuilder (hue, saturation) {
   this.hue = hue;
   this.saturation = saturation;
 }
 
-MonochromaticPaletteBuilder.prototype.build = function(count, range) {
+MonochromaticPaletteBuilder.prototype.build = function (count, range) {
   if (count < 1) {
     throw 'Count cannot be less than 1.';
   }
 
   var maxRange = 100;
-  if(range > maxRange) {
+  if (range > maxRange) {
     range = maxRange;
   }
 
@@ -19,9 +19,9 @@ MonochromaticPaletteBuilder.prototype.build = function(count, range) {
   var interval = range / (count - 1);
 
   var palette = [];
-  //get evenly spaced colors starting from the lightest (highest l value)
-  for(var c = count - 1; c >= 0; c -= 1) {
-     palette.push(new HSL(h, s, Math.floor(interval * c + min)));
+  // Get evenly spaced colors starting from the lightest (highest l value)
+  for (var c = count - 1; c >= 0; c -= 1) {
+    palette.push(new HSL(h, s, Math.floor(interval * c + min)));
   }
 
   return palette;
