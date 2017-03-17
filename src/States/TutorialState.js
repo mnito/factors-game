@@ -19,7 +19,8 @@ TutorialState.prototype.onEnter = function(context) {
     }
     context.level = this.tutorial.level = this.game.levels.get(1);
     this.playingState.onEnter(context);
-    this.playingState.selectTransitionInputMethod.detach();
+    this.playingState.selectTransitionKeyboardInputMethod.detach();
+    this.playingState.selectTransitionTouchInputMethod.detach();
     this.tutorial.renderRegion.x = this.playingState.statusBar.renderRegion.x;
     this.tutorial.renderRegion.width = this.playingState.statusBar.renderRegion.width;
     this.tutorial.draw();
