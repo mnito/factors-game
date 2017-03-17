@@ -9,31 +9,20 @@ MonochromaticPaletteBuilder.prototype.build = function(count, range) {
   }
 
   var maxRange = 100;
-  if (range > 100) {
-    range = 100;
+  if(range > maxRange) {
+    range = maxRange;
   }
 
-  var min = (100 - range) / 2;
+  var min = (maxRange - range) / 2;
   var h = this.hue;
   var s = this.saturation;
   var interval = range / (count - 1);
 
   var palette = [];
+  //get evenly spaced colors starting from the lightest (highest l value)
   for(var c = count - 1; c >= 0; c -= 1) {
      palette.push(new HSL(h, s, Math.floor(interval * c + min)));
   }
 
   return palette;
-};
-
-MonochromaticPaletteBuilder.prototype.getColor = function(number, count, range) {
-    var maxRange = 100;
-    if (range > 100) {
-      range = 100;
-    }
-
-    var min = (100 - range) / 2;
-    var interval = range / (count - 1);
-
-    return new HSL(this.hue, this.saturation, Math.floor(interval * (count / 2) + min));
 };
