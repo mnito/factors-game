@@ -4,7 +4,7 @@ The 🐐 of fun math games, twisting the very rules of math and increasingly cha
 
 ### Screenshot
 
-![Screenshot of level 10 of Factors Game](/blob/master/etc/level-10-screenshot.png?raw=true "Level 10")
+![Screenshot of level 10 of Factors Game](/etc/level-10-screenshot.png?raw=true "Level 10")
 
 ## The Concept
 
@@ -36,4 +36,4 @@ Michael P. Nitowski <[mpnitowski@gmail.com](mailto:mpnitowski@gmail.com)>
 
 ### License
 
-Factors Game is licensed under the MIT license.[MIT license](/blob/master/LICENSE "License of Factors Game")
+Factors Game is licensed under the [MIT license](/LICENSE "License of Factors Game").
