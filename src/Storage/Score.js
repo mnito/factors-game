@@ -3,6 +3,7 @@ function Score(results) {
 }
 
 Score.prototype.getResults = function() {
+    //dynamic results fetching
     if(typeof this.results === 'function') {
         return this.results();
     }
@@ -13,6 +14,7 @@ Score.prototype.totalLevelsPlayed = function() {
   return this.getResults().length;
 };
 
+//returns the sum of end numbers from each level
 Score.prototype.compositeFrom = function(firstLevel, lastLevel) {
   var totalLevelsPlayed = this.totalLevelsPlayed();
   if(firstLevel < 1 || lastLevel < 1) {

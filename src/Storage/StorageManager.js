@@ -1,5 +1,7 @@
 function StorageManager(storageMethod, prefix) {
     try {
+        /* With private browsing modes, sometimes localStorage appears to be
+           available yet when attempting to set an item an exception is thrown  */
         storageMethod.setItem('__available__', true);
         if(storageMethod.removeItem) {
             storageMethod.removeItem('__available__');
@@ -30,6 +32,7 @@ StorageManager.prototype.getLevelResults = function() {
 
 StorageManager.prototype.setLevelResult = function(level, result) {
     var results = this.getLevelResults();
+    //levels are stored in a zero-index array
     results[level - 1] = result;
     this.storageMethod.setItem(this.prefix + 'level_results', JSON.stringify(results));
 };
