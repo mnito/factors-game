@@ -21,8 +21,10 @@ Puzzle.prototype.playIndex = function(index) {
        throw "Index not available for play.";
     }
     var number = this.board.get(this.currentRow, index);
+    //if current number is divisible by the number played, divide it
     if (this.number % number === 0) {
        this.number /= number;
+    //otherwise, add to it
     } else {
        this.number += number;
     }
@@ -39,6 +41,7 @@ Puzzle.prototype.reset = function() {
 
 Puzzle.prototype.state = function() {
     if(this.currentRow !== 0 && this.number === 1) {
+        //the goal
         return 'ace';
     } else if(this.currentRow >= this.board.get().length) {
         return 'done';
@@ -54,6 +57,6 @@ Puzzle.prototype.isComplete = function() {
 
 Puzzle.prototype.assertOngoing = function() {
     if(this.isComplete()) {
-        throw "Puzzle is complete";
+        throw "Puzzle is complete.";
     }
 };

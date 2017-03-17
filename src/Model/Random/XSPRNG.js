@@ -1,11 +1,11 @@
 function XSPRNG(seed) {
     this.seed(seed);
-    //Max signed 32-bit integer + 1
+    //max signed 32-bit integer + 1
     this.max = 0x7FFFFFFF + 1;
 }
 
 XSPRNG.prototype.seed = function(seed) {
-    //!Number.isInteger(seed)
+    //!Number.isInteger(seed) - changed for cross-browser compatability
     if((seed ^ 0) !== seed) {
         throw "Seed should be integer.";
     }
@@ -13,6 +13,7 @@ XSPRNG.prototype.seed = function(seed) {
     this.previous = seed;
 };
 
+//Math.random but determinate
 XSPRNG.prototype.random = function() {
     var next = XSPRNG.xorshift32plusstar(this.previous);
     this.previous = next;
@@ -20,6 +21,7 @@ XSPRNG.prototype.random = function() {
 };
 
 XSPRNG.xorshift32plusstar = function(number) {
+    //the magic numbers
     number += 113566;
     number *= 5172511;
     number ^= number << 13;

@@ -5,9 +5,6 @@ function Board( board, prng ) {
     this.prng = typeof prng !== 'undefined' ? prng : Math;
 }
 
-/**
- * Create new unshuffled board
- */
 Board.create = function(rows, columns, prng) {
     var board = [];
     var c = 1;
@@ -22,11 +19,8 @@ Board.create = function(rows, columns, prng) {
     return new Board(board, prng);
 };
 
-/**
- * Randomly shuffle board using PRNG
 
- * Uses modified Fisher-Yates/Durstenfeld algorithm
- */
+//uses modified Fisher-Yates/Durstenfeld algorithm
 Board.prototype.shuffle = function() {
     var index = 0;
     var temp = 0;
@@ -41,7 +35,7 @@ Board.prototype.shuffle = function() {
     }
 };
 
-Board.prototype.get = function( row, column ) {
+Board.prototype.get = function(row, column) {
     if( typeof row === 'undefined' ) {
        return this.board;
     }
@@ -51,9 +45,7 @@ Board.prototype.get = function( row, column ) {
     return this.board[row][column];
 };
 
-/**
- * Implements iterable protocol to enable looping with for...of
- */
+//implements iterable protocol to enable looping with for...of
 if(typeof Symbol !== 'undefined' && typeof Symbol.iterator !== 'undefined') {
     Board.prototype[Symbol.iterator] = function () {
         var board = this.board;
