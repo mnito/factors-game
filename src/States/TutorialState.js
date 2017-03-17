@@ -5,6 +5,7 @@ function TutorialState(game) {
     var tutorial = new TutorialRenderer(game.brush, renderRegion, game.config.textColor, game.config.textBackground);
     this.tutorial = tutorial;
     var afterInput = this.playingState.levelKeyboardInputMethod.afterInput;
+    //draw tutorial content after level view is drawn
     var tutorialAfterInput = function() {
         afterInput();
         tutorial.draw();

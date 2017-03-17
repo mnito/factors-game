@@ -10,6 +10,7 @@ function CompleteState(game) {
     this.levelCompleteController.levelLimit = game.config.levelLimit;
     this.keyboardInputMethod = new KeyboardInput(this.levelCompleteController);
     this.swipeInputMethod = new SwipeInput(game.canvas, this.levelCompleteController);
+    //tap regions for retry and next
     var leftTapRegion = new TapRegion(new BoundingBox(0, renderRegion.height * .825, renderRegion.width * .5 - 1, renderRegion.height * .1), function() {
         this.levelCompleteController.left();
     }.bind(this));
@@ -41,6 +42,7 @@ CompleteState.prototype.onEnter = function(context) {
     var tapInputMethod = this.tapInputMethod;
     this.animation.run(function() {
         completeView.draw();
+        //listen after animation
         keyboardInputMethod.listen();
         swipeInputMethod.listen();
         tapInputMethod.listen();

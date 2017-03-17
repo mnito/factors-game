@@ -1,6 +1,4 @@
-/**
- * Factors Game by Michael P. Nitowski
- */
+//Factors Game by Michael P. Nitowski
 function FactorsGame(levels, config, storageManager, score, canvas) {
     this.levels = levels;
     this.config = config;
@@ -42,9 +40,11 @@ FactorsGame.init = function(canvas, config) {
     this.configure(config);
     var levels = new Levels(new XSPRNG(1), config.paletteRange, new MonochromaticPaletteBuilder());
     var storageManager;
+    //make sure storage method can be used
     try {
         storageManager = new StorageManager(config.storageMethod, config.storagePrefix);
     } catch(e) {
+        //if it cannot, use temporary storage method
         config.storageMethod = {
             data: {},
             setItem: function(key, value) {
