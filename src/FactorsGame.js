@@ -1,3 +1,6 @@
+/**
+ * Factors Game by Michael P. Nitowski
+ */
 function FactorsGame(levels, config, storageManager, score, canvas) {
     this.levels = levels;
     this.config = config;
@@ -20,7 +23,7 @@ function FactorsGame(levels, config, storageManager, score, canvas) {
 
 FactorsGame.prototype.start = function() {
     var completedTutorial = this.storageManager.getCurrentLevel() !== 1;
-    this.transition(completedTutorial ? 'PLAYING' : 'TUTORIAL');
+    this.transition(completedTutorial || !this.config.showTutorial ? 'PLAYING' : 'TUTORIAL');
 };
 
 FactorsGame.prototype.transition = function(nextState) {
@@ -32,4 +35,43 @@ FactorsGame.prototype.transition = function(nextState) {
         this.state = this.states[nextState];
     }
     this.state.onEnter(context);
+};
+
+FactorsGame.init = function(canvas, config) {
+    config = config || {};
+    this.configure(config);
+    var levels = new Levels(new XSPRNG(1), config.paletteRange, new MonochromaticPaletteBuilder());
+    var storageManager;
+    try {
+        storageManager = new StorageManager(config.storageMethod, config.storagePrefix);
+    } catch(e) {
+        config.storageMethod = {
+            data: {},
+            setItem: function(key, value) {
+                this.data[key] = value;
+            },
+            getItem: function(key) {
+                return this.data[key];
+            }
+        };
+        storageManager = new StorageManager(config.storageMethod, config.storagePrefix);
+    }
+    var score = new Score(function() {
+        return storageManager.getLevelResults();
+    });
+    return new FactorsGame(levels, config, storageManager, score, canvas);
+};
+
+FactorsGame.configure = function(config) {
+    var isPositiveInt = function(number) {
+        return ((number ^ 0) === number && number > 0) || number === Number.POSITIVE_INFINITY;
+    };
+    config.numberColor = config.numberColor || '#FFFFFF';
+    config.textColor = config.textColor || '#000000';
+    config.textBackground = config.textBackground || '#FFFFFF';
+    config.paletteRange = isPositiveInt(config.paletteRange) && config.paletteRange <= 100 || 70;
+    config.levelLimit = isPositiveInt(config.levelLimit) || 256;
+    config.storageMethod = config.storageMethod || localStorage;
+    config.storagePrefix = config.storagePrefix || 'factors_';
+    config.showTutorial = typeof config.showTutorial !== 'undefined' ? config.showTutorial : true;
 };
