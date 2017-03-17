@@ -16,7 +16,7 @@ SelectState.prototype.onEnter = function(context) {
     this.game.brush.clearAll();
     this.selectView.blockSize = context.levelView.blockSize || context.blockSize;
     this.inputMethod.min = 0;
-    this.inputMethod.max = this.game.score.totalLevelsPlayed() + 1;
+    this.inputMethod.max = Math.min(this.game.score.totalLevelsPlayed() + 1, this.game.config.levelLimit);
     this.inputMethod.xPad = this.selectView.blockSize / 2;
     this.inputMethod.yMin = this.selectView.renderRegion.height * .7;
     this.inputMethod.yMax = this.selectView.renderRegion.height * .7 + this.selectView.blockSize;

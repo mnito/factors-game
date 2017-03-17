@@ -7,6 +7,7 @@ function CompleteState(game) {
         this.nextLevel = game.levels.get(levelNumber);
         game.transition('PLAYING');
     }.bind(this));
+    this.levelCompleteController.levelLimit = game.config.levelLimit;
     this.keyboardInputMethod = new KeyboardInput(this.levelCompleteController);
     this.swipeInputMethod = new SwipeInput(game.canvas, this.levelCompleteController);
     var leftTapRegion = new TapRegion(new BoundingBox(0, renderRegion.height * .825, renderRegion.width * .5 - 1, renderRegion.height * .1), function() {
