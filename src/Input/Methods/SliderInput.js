@@ -2,12 +2,17 @@ function SliderInput(element, callback, xPad, yMin, yMax, min, max) {
     this.element = typeof element !== 'undefined' ? element : document;
     this.maxWidth = element.width || element.offsetWidth || element.clientWidth || window.innerWidth;
     this.callback = callback;
+
+    //padding from left and right edges
     this.xPad = xPad;
+    //determines touch region
     this.yMin = yMin;
     this.yMax = yMax;
+
     this.min = min;
     this.max = max;
     this.value = min;
+
     this.listeners = {
         touchStart: this.startTouch.bind(this),
         touchMove: this.determineValue.bind(this),
@@ -38,12 +43,15 @@ SliderInput.prototype.determineValue = function(event) {
     }
     var xEnd = event.touches[0].clientX;
     var yEnd = event.touches[0].clientY;
+    //prevents going too far out of y range
     if(Math.abs(this.yStart - yEnd) > Math.abs(this.xStart - xEnd) - 8 && (yEnd - this.yStart > 0)) {
         return;
     }
+    //linear translation
     var value = Math.max(this.min, Math.min(Math.round((((xEnd - this.xPad) * (this.max - this.min)) / (this.maxWidth - this.xPad * 2)) + this.min), this.max));
     this.value = value;
     if(typeof this.callback === 'function') {
+        //make sure x is in range
         var x = Math.max(this.xPad, Math.min(xEnd, this.maxWidth - this.xPad));
         var y = event.touches[0].clientY;
         this.lastX = x;
@@ -55,6 +63,7 @@ SliderInput.prototype.determineValue = function(event) {
 SliderInput.prototype.endTouch = function(event) {
     var xEnd = event.changedTouches[0].clientX;
     var yEnd = event.changedTouches[0].clientY;
+    //down swipe essentially
     if(Math.abs(this.yStart - yEnd) > Math.abs(this.xStart - xEnd) - 8 && (yEnd - this.yStart > 20)) {
         return this.onSelect(this.value);
     }
@@ -67,21 +76,21 @@ SliderInput.prototype.onSelect = function(value) {};
 
 SliderInput.prototype.setValue = function(event) {
     var keyCode = event.keyCode;
-    //For number input - tries to append digit if within range
+    //for number input - tries to append digit if within range
     if(keyCode >= 48 && keyCode <= 57 || keyCode >= 96 && keyCode <= 105) {
        var zeroCode = keyCode <= 57 ? 48 : 96;
        var number = keyCode - zeroCode;
        var value = this.value.toString();
        value += number.toString();
        this.value = value > this.max ? Math.min(number, this.max) : parseInt(value);
-    //Backspace input - let's do it mathematically
+    //backspace input - let's do it mathematically
     } else if(keyCode === 8) {
         event.preventDefault();
        this.value = Math.floor(this.value / 10);
-    //Left and right arrow keys - treat it like a number line
+    //left and right arrow keys - treat it like a number line
     } else {
         switch(event.keyCode) {
-            //Left
+            //left
             case 37 :
             case 65 :
             case 72 :
@@ -89,7 +98,7 @@ SliderInput.prototype.setValue = function(event) {
                     this.value -= 1;
                 }
                 break;
-            //Right
+            //right
             case 39 :
             case 68 :
             case 76 :
@@ -97,7 +106,7 @@ SliderInput.prototype.setValue = function(event) {
                     this.value += 1;
                 }
                 break;
-            //Down or enter
+            //down or enter
             case 40 :
             case 74 :
             case 83 :

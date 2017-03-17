@@ -13,9 +13,11 @@ LevelCompleteController.prototype.left = function() {
 
 LevelCompleteController.prototype.right = function() {
     var nextLevelNumber = this.level.getNumber() + 1;
+    //wrap back around if above limit
     if(this.levelLimit && nextLevelNumber > this.levelLimit) {
         nextLevelNumber = 1;
     }
+    //don't increment if last level
     if(nextLevelNumber - 1 === this.storageManager.getCurrentLevel()) {
         this.storageManager.incrementCurrentLevel();
     }

@@ -6,6 +6,7 @@ function DoubleUpInput(onDoubleUp) {
 
 DoubleUpInput.prototype.listener = function(e) {
     switch(e.keyCode) {
+        //up keys
         case 38 :
         case 75 :
         case 87 :

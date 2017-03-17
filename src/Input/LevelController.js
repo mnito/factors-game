@@ -4,6 +4,7 @@ function LevelController(onComplete, level) {
 };
 
 LevelController.prototype.left = function() {
+  //prevent exceeding board
   if(this.level.index === 0) {
     return;
   }
@@ -11,6 +12,7 @@ LevelController.prototype.left = function() {
 };
 
 LevelController.prototype.right = function() {
+  //prevent exceeding board
   if(this.level.index === this.level.puzzle.board.columns - 1) {
     return;
   }

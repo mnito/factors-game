@@ -19,6 +19,7 @@ TapInput.prototype.listen = function() {
 
 TapInput.prototype.tap = function(event) {
     event.preventDefault();
+    //used for both touchstart and mousedown events
     var isTouchEvent = event.type === 'touchstart';
     var x = isTouchEvent ? event.touches[0].clientX : event.clientX;
     var y = isTouchEvent ? event.touches[0].clientY : event.clientY;

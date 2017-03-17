@@ -5,7 +5,6 @@ function KeyboardInput(inputController, afterInput) {
 };
 
 KeyboardInput.prototype.listener = function(e) {
-    console.log(e);
    switch(e.keyCode) {
      case 37 :
      case 65 :
