@@ -33,7 +33,7 @@ SliderInput.prototype.determineValue = function(event) {
     }
 };
 
-SliderInput.prototype.setValue = function(event) {2
+SliderInput.prototype.setValue = function(event) {
     var keyCode = event.keyCode;
     //For number input - tries to append digit if within range
     if(keyCode >= 48 && keyCode <= 57 || keyCode >= 96 && keyCode <= 105) {
