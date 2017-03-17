@@ -3,6 +3,7 @@ function LevelCompleteAnimation( brush, renderRegion, level, levelView, statusBa
     this.renderRegion = renderRegion;
     this.level = level;
     this.levelView = levelView;
+    //keep status bar in animation
     this.statusBar = statusBar;
     this.onComplete = onComplete;
 }
@@ -10,14 +11,20 @@ function LevelCompleteAnimation( brush, renderRegion, level, levelView, statusBa
 LevelCompleteAnimation.prototype.frame = function() {
     var brush = this.brush;
     var number = this.level.puzzle.number;
+
+    //move block to bottom
     if(this.y < this.renderRegion.height - this.blockSize) {
         this.y += 30;
+    //lock block to bottom
     } else if(this.y !== this.renderRegion.height - this.blockSize) {
         this.y = this.renderRegion.height - this.blockSize;
+    //expand block
     } else if(this.x < 0) {
         this.blockSize += 30;
         this.y -= 30;
+    //move block over
     } else {
+        //quickness is somewhat based on width
         this.x -= 13 + (this.renderRegion.width * .005);
     }
     brush.fillStyle = this.blockColor;

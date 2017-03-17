@@ -40,6 +40,7 @@ TutorialRenderer.prototype.draw = function() {
         line = this.lines[3];
         this.done = true;
     }
+    //avoid unnecessary draw
     if(line === this.currentLine || typeof line === 'undefined') {
         return;
     }

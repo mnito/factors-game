@@ -29,6 +29,7 @@ LevelCompleteView.prototype.drawResult = function() {
 
 LevelCompleteView.prototype.drawScore = function() {
     var total, sixteenTotal;
+    //infinity symbol
     total = sixteenTotal = "\u221E";
     var levelNumber = this.level.puzzle.original;
     var lowerBound = Math.max(levelNumber - 15, 1);

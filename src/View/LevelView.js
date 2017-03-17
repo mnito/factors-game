@@ -53,7 +53,6 @@ LevelView.prototype.drawNumber = function() {
     this.brush.fillStyle = this.level.palette.numberColor.toString();
     this.brush.fillRect(x, y, this.blockSize, this.blockSize);
     this.brush.fillStyle = this.numberColor;
-    console.log(this.level);
     this.brush.fillText('' + this.level.puzzle.number, x + this.blockSize / 2, y + this.blockSize / 2);
 };
 
@@ -61,13 +60,12 @@ LevelView.prototype.draw = function() {
     if(typeof this.level === 'undefined') {
         return;
     }
-
+    //caching of block size and left margin
     if(typeof this.last === 'undefined' || this.last.columns !== this.level.columns || this.last.rows !== this.level.rows) {
         this.determineBlockSize();
         this.determineLeftMargin();
         this.last = this.level;
     }
-
     this.resetFont();
     this.drawNumber();
     this.drawBoard();
