@@ -1,9 +1,18 @@
-function StorageManager(storageMethod) {
+function StorageManager(storageMethod, prefix) {
+    try {
+        storageMethod.setItem('__available__', true);
+        if(storageMethod.removeItem) {
+            storageMethod.removeItem('__available__');
+        }
+    } catch(e) {
+        throw "Storage method is not currently available.";
+    }
     this.storageMethod = storageMethod;
+    this.prefix = prefix || '';
 }
 
 StorageManager.prototype.setCurrentLevel = function(level) {
-    this.storageMethod.setItem('currentLevel', level);
+    this.storageMethod.setItem(this.prefix + 'level_current', level);
 };
 
 StorageManager.prototype.incrementCurrentLevel = function() {
@@ -11,34 +20,18 @@ StorageManager.prototype.incrementCurrentLevel = function() {
 };
 
 StorageManager.prototype.getCurrentLevel = function() {
-    return parseInt(this.storageMethod.getItem('currentLevel')) || 1;
-};
-
-StorageManager.prototype.setCurrentLevelHistory = function(history) {
-    this.history = history;
-};
-
-StorageManager.prototype.updateCurrentLevelHistory = function() {
-    if(typeof this.history === 'undefined' ) {
-        throw "Cannot update history without history object";
-    }
-    this.storageMethod.setItem('currentLevelHistory', JSON.stringify(this.history));
-};
-
-StorageManager.prototype.getCurrentLevelHistory = function(history) {
-    var history = this.storageMethod.getItem('currentLevelHistory');
-    return history ? JSON.parse(history) : [];
+    return parseInt(this.storageMethod.getItem(this.prefix + 'level_current')) || 1;
 };
 
 StorageManager.prototype.getLevelResults = function() {
-    var results = this.storageMethod.getItem('levelResults');
+    var results = this.storageMethod.getItem(this.prefix + 'level_results');
     return results ? JSON.parse(results) : [];
 };
 
 StorageManager.prototype.setLevelResult = function(level, result) {
     var results = this.getLevelResults();
     results[level - 1] = result;
-    this.storageMethod.setItem('levelResults', JSON.stringify(results));
+    this.storageMethod.setItem(this.prefix + 'level_results', JSON.stringify(results));
 };
 
 StorageManager.prototype.getLevelResult = function(level) {
