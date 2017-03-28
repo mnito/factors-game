@@ -28,7 +28,7 @@ TapInput.prototype.tap = function (event) {
 
   // Scale factors for canvas
   var scaleX = (this.element.width || this.element.clientWidth) / this.element.clientWidth;
-  var scaleY = (this.element.height || this.element.clientHeight) / this.element.clientWidth;
+  var scaleY = (this.element.height || this.element.clientHeight) / this.element.clientHeight;
 
   var x = ((isTouchEvent ? event.touches[0].clientX  : event.clientX) - targetRect.left) * scaleX;
   var y = ((isTouchEvent ? event.touches[0].clientY  : event.clientY) - targetRect.top) * scaleY;
