@@ -94,6 +94,7 @@ SliderInput.prototype.setValue = function (event) {
       case 37 :
       case 65 :
       case 72 :
+        event.preventDefault();
         if (this.value > this.min) {
           this.value -= 1;
         }
@@ -102,6 +103,7 @@ SliderInput.prototype.setValue = function (event) {
       case 39 :
       case 68 :
       case 76 :
+        event.preventDefault();
         if (this.value < this.max) {
           this.value += 1;
         }
@@ -111,6 +113,7 @@ SliderInput.prototype.setValue = function (event) {
       case 74 :
       case 83 :
       case 13 :
+        event.preventDefault();
         this.onSelect(this.value);
         return;
     }
