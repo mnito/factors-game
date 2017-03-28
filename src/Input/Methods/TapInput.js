@@ -19,10 +19,19 @@ TapInput.prototype.listen = function () {
 
 TapInput.prototype.tap = function (event) {
   event.preventDefault();
+
   // Used for both touchstart and mousedown events
   var isTouchEvent = event.type === 'touchstart';
-  var x = isTouchEvent ? event.touches[0].clientX : event.clientX;
-  var y = isTouchEvent ? event.touches[0].clientY : event.clientY;
+
+  // Used to get position of point within element
+  var targetRect = event.target.getBoundingClientRect();
+
+  // Scale factors for canvas
+  var scaleX = (this.element.width || this.element.clientWidth) / this.element.clientWidth;
+  var scaleY = (this.element.height || this.element.clientHeight) / this.element.clientWidth;
+
+  var x = ((isTouchEvent ? event.touches[0].clientX  : event.clientX) - targetRect.left) * scaleX;
+  var y = ((isTouchEvent ? event.touches[0].clientY  : event.clientY) - targetRect.top) * scaleY;
   for (var i = 0; i < this.tapRegions.length; i += 1) {
     var tapRegion = this.tapRegions[i];
     if (tapRegion.boundingBox.isPointWithin(x, y) && typeof tapRegion.onTap === 'function') {
