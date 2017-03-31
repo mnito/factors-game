@@ -24,6 +24,7 @@ function PlayingState (game) {
 PlayingState.prototype.onEnter = function (context) {
   this.game.brush.clearAll();
   var level = context && context.level ? context.level : this.game.levels.get(this.game.storageManager.getCurrentLevel());
+  this.game.canvas.style.backgroundColor = level.palette.backgroundColor;
   this.levelController.level = level;
   this.levelView.level = level;
   this.levelKeyboardInputMethod.listen();

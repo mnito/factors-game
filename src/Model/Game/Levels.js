@@ -16,8 +16,9 @@ Levels.prototype.get = function (level) {
 
   var boardColors = this.paletteBuilder.build(16, this.paletteRange);
   var numberColor = HSL.complement(boardColors[Math.floor(this.prng.random() * 16)]);
-
-  var levelPalette = new LevelPalette(numberColor, boardColors);
+  var backgroundColor = numberColor.clone();
+  backgroundColor.l = Math.floor(numberColor.l + 45) % 101;
+  var levelPalette = new LevelPalette(numberColor, boardColors, backgroundColor);
 
   var board = Board.create(4, 4, this.prng);
   board.shuffle();

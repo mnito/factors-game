@@ -39,7 +39,7 @@ FactorsGame.prototype.transition = function (nextState) {
 FactorsGame.init = function (canvas, config) {
   config = config || {};
   this.configure(config);
-  var levels = new Levels(new XSPRNG(1), config.paletteRange, new MonochromaticPaletteBuilder());
+  var levels = new Levels(new XSPRNG(1), config.paletteRange, new MonochromaticPaletteBuilder(null, null, 0.8));
   var storageManager;
   // Make sure storage method can be used
   try {
