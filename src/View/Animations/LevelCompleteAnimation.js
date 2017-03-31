@@ -19,7 +19,8 @@ LevelCompleteAnimation.prototype.frame = function () {
   } else if (this.y !== this.renderRegion.height - this.blockSize) {
     this.y = this.renderRegion.height - this.blockSize;
   // Expand block
-  } else if (this.x < 0) {
+  } else if (this.x <= 0) {
+    this.x = 0;
     this.blockSize += 30;
     this.y -= 30;
   // Move block over
@@ -31,7 +32,7 @@ LevelCompleteAnimation.prototype.frame = function () {
   brush.fillStyle = this.blockColor;
   brush.clearRect(0, 0, this.renderRegion.width, this.renderRegion.height);
   brush.fillRect(this.x, this.y, this.blockSize, this.blockSize);
-  if (this.x >= 0) {
+  if (this.x > 0) {
     this.resetFont();
     brush.fillStyle = this.numberColor;
     brush.fillText('' + number, this.x + this.blockSize / 2, this.y + this.blockSize / 2);
