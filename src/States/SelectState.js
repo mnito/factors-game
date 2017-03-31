@@ -14,7 +14,7 @@ function SelectState (game) {
 
 SelectState.prototype.onEnter = function (context) {
   this.game.brush.clearAll();
-  this.game.canvas.style.backgroundColor = 'initial';
+  this.game.canvas.style.removeProperty('background-color');
   this.selectView.blockSize = context.levelView.blockSize || context.blockSize;
   this.inputMethod.min = 0;
   this.inputMethod.max = Math.min(this.game.score.totalLevelsPlayed() + 1, this.game.config.levelLimit);
