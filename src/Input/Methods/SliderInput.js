@@ -13,10 +13,16 @@ function SliderInput (element, callback, xPad, yMin, yMax, min, max) {
   this.max = max;
   this.value = min;
 
+  this.xStart = null;
+  this.yStart = null;
+
   this.listeners = {
     touchStart: this.startTouch.bind(this),
     touchMove: this.determineValue.bind(this),
     touchEnd: this.endTouch.bind(this),
+    mouseDown: this.startTouch.bind(this),
+    mouseMove: this.determineValue.bind(this),
+    mouseUp: this.endTouch.bind(this),
     keyDown: this.setValue.bind(this)
   };
 }
@@ -25,14 +31,31 @@ SliderInput.prototype.listen = function () {
   this.element.addEventListener('touchstart', this.listeners.touchStart);
   this.element.addEventListener('touchmove', this.listeners.touchMove);
   this.element.addEventListener('touchend', this.listeners.touchEnd);
+
+  //Simulate touch events for mouse
+  this.element.addEventListener('mousedown', this.listeners.mouseDown);
+  this.element.addEventListener('mousemove', this.listeners.mouseMove);
+  this.element.addEventListener('mouseup', this.listeners.mouseUp);
+
   document.addEventListener('keydown', this.listeners.keyDown);
 };
 
 SliderInput.prototype.startTouch = function (event) {
   event.preventDefault();
   event.stopPropagation();
-  this.xStart = event.touches[0].clientX;
-  this.yStart = event.touches[0].clientY;
+  var offset = this.offsetPoints(event.clientX || event.touches[0].clientX, event.clientY || event.touches[0].clientY, event);
+  this.xStart = offset.x;
+  this.yStart = offset.y;
+};
+
+SliderInput.prototype.offsetPoints = function (x, y, event) {
+  var targetRect = event.target.getBoundingClientRect();
+
+  // Scale factors for canvas
+  var scaleX = (this.element.width || this.element.clientWidth) / this.element.clientWidth;
+  var scaleY = (this.element.height || this.element.clientHeight) / this.element.clientHeight;
+
+  return {x: (x - targetRect.left) * scaleX, y: (y - targetRect.top) * scaleY};
 };
 
 SliderInput.prototype.determineValue = function (event) {
@@ -41,8 +64,9 @@ SliderInput.prototype.determineValue = function (event) {
   if (this.xStart === null || this.yStart < this.yMin || this.yStart > this.yMax) {
     return;
   }
-  var xEnd = event.touches[0].clientX;
-  var yEnd = event.touches[0].clientY;
+  var offset = this.offsetPoints(event.clientX || event.touches[0].clientX, event.clientY || event.touches[0].clientY, event);
+  var xEnd = offset.x;
+  var yEnd = offset.y;
   // Prevents going too far out of y range
   if (Math.abs(this.yStart - yEnd) > Math.abs(this.xStart - xEnd) - 8 && (yEnd - this.yStart > 0)) {
     return;
@@ -53,7 +77,7 @@ SliderInput.prototype.determineValue = function (event) {
   if (typeof this.callback === 'function') {
     // Make sure x is in range
     var x = Math.max(this.xPad, Math.min(xEnd, this.maxWidth - this.xPad));
-    var y = event.touches[0].clientY;
+    var y = event.clientY || event.touches[0].clientY;
     this.lastX = x;
     this.lastY = y;
     this.callback(value, x, y, false);
@@ -61,12 +85,9 @@ SliderInput.prototype.determineValue = function (event) {
 };
 
 SliderInput.prototype.endTouch = function (event) {
-  var xEnd = event.changedTouches[0].clientX;
-  var yEnd = event.changedTouches[0].clientY;
-  // Down swipe essentially
-  if (Math.abs(this.yStart - yEnd) > Math.abs(this.xStart - xEnd) - 8 && (yEnd - this.yStart > 20)) {
-    return this.onSelect(this.value);
-  }
+  var offset = this.offsetPoints(event.clientX || event.changedTouches[0].clientX, event.clientY || event.changedTouches[0].clientY, event);
+  var xEnd = offset.x;
+  var yEnd = offset.y;
   this.xStart = null;
   this.yStart = null;
   this.callback(this.value, this.lastX, this.lastY, true);
@@ -108,17 +129,19 @@ SliderInput.prototype.setValue = function (event) {
           this.value += 1;
         }
         break;
-      // Down or enter
+      // Down, enter, or spacebar
       case 40 :
       case 74 :
       case 83 :
       case 13 :
+      case 32 :
         event.preventDefault();
-        this.onSelect(this.value);
+        this.onSelect(this.value, event);
         return;
     }
   }
   var x = Math.max(this.value, this.min) * ((this.maxWidth - this.xPad * 2) / this.max) + this.xPad;
+  this.lastX = x;
   this.callback(this.value, x, null, true);
 };
 
@@ -133,5 +156,8 @@ SliderInput.prototype.detach = function () {
   this.element.removeEventListener('touchstart', this.listeners.touchStart);
   this.element.removeEventListener('touchmove', this.listeners.touchMove);
   this.element.removeEventListener('touchend', this.listeners.touchEnd);
+  this.element.removeEventListener('mousedown', this.listeners.mouseDown);
+  this.element.removeEventListener('mousemove', this.listeners.mouseMove);
+  this.element.removeEventListener('mouseup', this.listeners.mouseUp);
   document.removeEventListener('keydown', this.listeners.keyDown);
 };
