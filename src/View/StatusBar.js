@@ -11,17 +11,17 @@ StatusBar.prototype.draw = function () {
   this.brush.textAlign = 'left';
   this.brush.textBaseline = 'top';
   this.brush.fillStyle = this.level.palette.numberColor.toString();
-  var levelStr = 'level ' + this.level.getNumber();
+  var levelStr = 'Level ' + this.level.getNumber();
   if (this.score) {
     try {
-      levelStr += ' | avg: ' + this.score.average().toFixed(4);
+      levelStr += ' | Avg: ' + this.score.average().toFixed(4);
     } catch (e) {
       //
     }
   }
   this.brush.fillText(levelStr, this.renderRegion.x, this.renderRegion.y);
   this.brush.textAlign = 'right';
-  this.brush.fillText('[select]', this.renderRegion.x + this.renderRegion.width, this.renderRegion.y);
+  this.brush.fillText('[Select]', this.renderRegion.x + this.renderRegion.width, this.renderRegion.y);
 };
 
 StatusBar.prototype.redraw = function () {
