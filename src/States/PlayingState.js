@@ -42,6 +42,11 @@ PlayingState.prototype.onEnter = function (context) {
   this.selectTransitionTouchInputMethod.tapRegions[0].boundingBox = new BoundingBox(this.levelView.leftMargin + (this.levelView.blockSize + this.levelView.spacing) * 3, 0, this.levelView.blockSize, this.statusBar.renderRegion.height * 0.75);
   this.selectTransitionTouchInputMethod.listen();
   this.selectTransitionKeyboardInputMethod.listen();
+
+  var gameIsComplete = this.game.score.totalLevelsPlayed() >= this.game.config.levelLimit;
+  if(gameIsComplete) {
+      this.game.storageManager.setCurrentLevel(level.getNumber());
+  }
 };
 
 PlayingState.prototype.onLeave = function () {

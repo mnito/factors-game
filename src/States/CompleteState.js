@@ -29,6 +29,9 @@ CompleteState.prototype.onEnter = function (context) {
     }
   } catch (e) {
     this.game.storageManager.setLevelResult(result.level, result);
+    if(result.level < this.game.config.levelLimit) {
+        this.game.storageManager.incrementCurrentLevel();
+    }
   }
   this.completeView.level = context.level;
   this.completeView.score = this.game.score;

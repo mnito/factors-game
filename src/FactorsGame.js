@@ -21,7 +21,7 @@ function FactorsGame (levels, config, storageManager, score, canvas) {
 }
 
 FactorsGame.prototype.start = function () {
-  var completedTutorial = this.storageManager.getCurrentLevel() !== 1;
+  var completedTutorial = this.score.totalLevelsPlayed() > 0;
   this.transition(completedTutorial || !this.config.showTutorial ? 'PLAYING' : 'TUTORIAL');
 };
 
@@ -70,8 +70,8 @@ FactorsGame.configure = function (config) {
   config.numberColor = config.numberColor || '#FFFFFF';
   config.textColor = config.textColor || '#000000';
   config.textBackground = config.textBackground || '#FFFFFF';
-  config.paletteRange = isPositiveInt(config.paletteRange) && config.paletteRange <= 100 || 70;
-  config.levelLimit = isPositiveInt(config.levelLimit) || 256;
+  config.paletteRange = isPositiveInt(config.paletteRange) && config.paletteRange <= 100 ? config.paletteRange : 70;
+  config.levelLimit = isPositiveInt(config.levelLimit) ? config.levelLimit : 256;
   config.storageMethod = config.storageMethod || localStorage;
   config.storagePrefix = config.storagePrefix || 'factors_';
   config.showTutorial = typeof config.showTutorial !== 'undefined' ? config.showTutorial : true;
