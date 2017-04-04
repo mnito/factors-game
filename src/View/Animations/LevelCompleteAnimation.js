@@ -11,22 +11,22 @@ function LevelCompleteAnimation (brush, renderRegion, level, levelView, statusBa
 LevelCompleteAnimation.prototype.frame = function () {
   var brush = this.brush;
   var number = this.level.puzzle.number;
-
+  // Quickness is based on width and height
+  var movementFactor = Math.floor(Math.max(this.renderRegion.width, this.renderRegion.height) * 0.025);
   // Move block to bottom
   if (this.y < this.renderRegion.height - this.blockSize) {
-    this.y += 30;
+    this.y += movementFactor;
   // Lock block to bottom
   } else if (this.y !== this.renderRegion.height - this.blockSize) {
     this.y = this.renderRegion.height - this.blockSize;
   // Expand block
   } else if (this.x <= 0) {
     this.x = 0;
-    this.blockSize += 30;
-    this.y -= 30;
+    this.blockSize += movementFactor;
+    this.y -= movementFactor;
   // Move block over
   } else {
-    // Quickness is somewhat based on width
-    this.x -= 13 + (this.renderRegion.width * 0.005);
+    this.x -= movementFactor;
   }
 
   brush.fillStyle = this.blockColor;
