@@ -4,13 +4,15 @@ function SwipeInput (element, inputController, afterInput) {
   this.afterInput = afterInput;
   this.listeners = {
     touchStart: this.startTouch.bind(this),
-    touchMove: this.detectSwipe.bind(this)
+    touchMove: function(event) { event.preventDefault(); },
+    touchEnd: this.detectSwipe.bind(this)
   };
 }
 
 SwipeInput.prototype.listen = function () {
   this.element.addEventListener('touchstart', this.listeners.touchStart);
   this.element.addEventListener('touchmove', this.listeners.touchMove);
+  this.element.addEventListener('touchend', this.listeners.touchEnd);
 };
 
 SwipeInput.prototype.startTouch = function (event) {
@@ -26,8 +28,8 @@ SwipeInput.prototype.detectSwipe = function (event) {
     return;
   }
 
-  var xEnd = event.touches[0].clientX;
-  var yEnd = event.touches[0].clientY;
+  var xEnd = event.changedTouches[0].clientX;
+  var yEnd = event.changedTouches[0].clientY;
 
   var deltaX = xEnd - this.xStart;
   var deltaY = yEnd - this.yStart;
@@ -53,4 +55,5 @@ SwipeInput.prototype.detectSwipe = function (event) {
 SwipeInput.prototype.detach = function () {
   this.element.removeEventListener('touchstart', this.listeners.touchStart);
   this.element.removeEventListener('touchmove', this.listeners.touchMove);
+  this.element.removeEventListener('touchend', this.listeners.touchEnd);
 };
