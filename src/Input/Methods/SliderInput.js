@@ -67,10 +67,6 @@ SliderInput.prototype.determineValue = function (event) {
   var offset = this.offsetPoints(event.clientX || event.touches[0].clientX, event.clientY || event.touches[0].clientY, event);
   var xEnd = offset.x;
   var yEnd = offset.y;
-  // Prevents going too far out of y range
-  if (Math.abs(this.yStart - yEnd) > Math.abs(this.xStart - xEnd) - 8 && (yEnd - this.yStart > 0)) {
-    return;
-  }
   // Linear translation
   var value = Math.max(this.min, Math.min(Math.round((((xEnd - this.xPad) * (this.max - this.min)) / (this.maxWidth - this.xPad * 2)) + this.min), this.max));
   this.value = value;

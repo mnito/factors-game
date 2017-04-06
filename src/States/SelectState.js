@@ -28,8 +28,8 @@ SelectState.prototype.onEnter = function (context) {
   this.sliderInput.min = 0;
   this.sliderInput.max = Math.min(this.game.score.totalLevelsPlayed() + 1, this.game.config.levelLimit);
   this.sliderInput.xPad = this.selectView.xPad;
-  this.sliderInput.yMin = this.selectView.sliderY - this.selectView.blockSize / 2;
-  this.sliderInput.yMax = this.selectView.sliderY + this.selectView.blockSize / 2;
+  this.sliderInput.yMin = this.selectView.sliderY - this.selectView.blockSize;
+  this.sliderInput.yMax = this.selectView.sliderY + this.selectView.blockSize;
   this.sliderInput.triggerInitial(context.level.getNumber() || 0);
   this.sliderInput.listen();
 
