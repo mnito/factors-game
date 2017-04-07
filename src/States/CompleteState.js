@@ -17,7 +17,7 @@ function CompleteState (game) {
   var rightTapRegion = new TapRegion(new BoundingBox(renderRegion.width * 0.5 + 1, renderRegion.height * 0.825, renderRegion.width * 0.5 - 1, renderRegion.height * 0.1), function () {
     this.levelCompleteController.right();
   }.bind(this));
-  this.tapInputMethod = new TapInput(canvas, [leftTapRegion, rightTapRegion]);
+  this.tapInputMethod = new TapInput(game.canvas, [leftTapRegion, rightTapRegion]);
 }
 
 CompleteState.prototype.onEnter = function (context) {
