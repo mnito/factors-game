@@ -1,5 +1,7 @@
-function LevelController (onComplete, level) {
+function LevelController (afterInput, onComplete, onInitialStateUp, level) {
+  this.afterInput = afterInput;
   this.onComplete = onComplete;
+  this.onInitialStateUp = onInitialStateUp;
   this.level = level;
 }
 
@@ -9,6 +11,7 @@ LevelController.prototype.left = function () {
     return;
   }
   this.level.index -= 1;
+  this.tryAfterInput();
 };
 
 LevelController.prototype.right = function () {
@@ -17,6 +20,7 @@ LevelController.prototype.right = function () {
     return;
   }
   this.level.index += 1;
+  this.tryAfterInput();
 };
 
 LevelController.prototype.down = function () {
@@ -26,10 +30,21 @@ LevelController.prototype.down = function () {
   if (this.level.puzzle.isComplete() && typeof this.onComplete === 'function') {
     this.onComplete(this.level);
   }
+  this.tryAfterInput();
 };
 
 LevelController.prototype.up = function () {
+  var initialState = this.level.puzzle.history.length === 0;
+  if (initialState && typeof this.onInitialStateUp === 'function') {
+    this.onInitialStateUp();
+    return;
+  }
   this.level.puzzle.reset();
+  this.tryAfterInput();
 };
 
-LevelController.prototype.onComplete = function () {};
+LevelController.prototype.tryAfterInput = function () {
+  if(typeof this.afterInput === 'function') {
+    this.afterInput();
+  }
+};

@@ -5,20 +5,22 @@ function PlayingState (game) {
   this.statusBar = new StatusBar(game.brush, new RenderRegion());
   this.statusBar.renderRegion.height = game.canvas.height * 0.15;
   this.levelController = new LevelController();
-  var afterInput = function () {
+  this.levelController.afterInput = function() {
     this.levelView.redraw();
   }.bind(this);
-  this.levelKeyboardInputMethod = new KeyboardInput(this.levelController, afterInput);
-  this.levelTouchInputMethod = new SwipeInput(game.canvas, this.levelController, afterInput);
-  this.selectTransitionTouchInputMethod = new TapInput(game.canvas, [new TapRegion(null, function () {
-    game.transition('SELECT');
-  })]);
-  this.selectTransitionKeyboardInputMethod = new DoubleUpInput(function () {
-    game.transition('SELECT');
-  });
   this.levelController.onComplete = function () {
     game.transition('COMPLETE');
   };
+  this.levelController.onInitialStateUp = function() {
+      game.transition('SELECT');
+  };
+
+  this.selectTransitionTapInputMethod = new TapInput(game.canvas, [new TapRegion(null, function () {
+    game.transition('SELECT');
+  })]);
+
+  this.levelKeyboardInputMethod = new KeyboardInput(this.levelController);
+  this.levelTouchInputMethod = new SwipeInput(game.canvas, this.levelController);
 }
 
 PlayingState.prototype.onEnter = function (context) {
@@ -39,9 +41,8 @@ PlayingState.prototype.onEnter = function (context) {
   this.statusBar.score = this.game.score;
   this.statusBar.draw();
 
-  this.selectTransitionTouchInputMethod.tapRegions[0].boundingBox = new BoundingBox(this.levelView.leftMargin + (this.levelView.blockSize + this.levelView.spacing) * 3, 0, this.levelView.blockSize, this.statusBar.renderRegion.height * 0.75);
-  this.selectTransitionTouchInputMethod.listen();
-  this.selectTransitionKeyboardInputMethod.listen();
+  this.selectTransitionTapInputMethod.tapRegions[0].boundingBox = new BoundingBox(this.levelView.leftMargin + (this.levelView.blockSize + this.levelView.spacing) * 3, 0, this.levelView.blockSize, this.statusBar.renderRegion.height * 0.75);
+  this.selectTransitionTapInputMethod.listen();
 
   if (this.game.isComplete) {
       this.game.storageManager.setCurrentLevel(level.getNumber());
@@ -51,8 +52,7 @@ PlayingState.prototype.onEnter = function (context) {
 PlayingState.prototype.onLeave = function () {
   this.levelKeyboardInputMethod.detach();
   this.levelTouchInputMethod.detach();
-  this.selectTransitionTouchInputMethod.detach();
-  this.selectTransitionKeyboardInputMethod.detach();
+  this.selectTransitionTapInputMethod.detach();
 
   return { level: this.levelView.level, levelView: this.levelView, statusBar: this.statusBar };
 };

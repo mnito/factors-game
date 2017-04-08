@@ -1,6 +1,5 @@
-function KeyboardInput (inputController, afterInput) {
+function KeyboardInput (inputController) {
   this.inputController = inputController;
-  this.afterInput = afterInput;
   this.listeners = { keyDown: this.listener.bind(this) };
 }
 
@@ -30,9 +29,6 @@ KeyboardInput.prototype.listener = function (e) {
       e.preventDefault();
       this.inputController.right();
       break;
-  }
-  if (typeof this.afterInput === 'function') {
-    this.afterInput();
   }
 };
 
