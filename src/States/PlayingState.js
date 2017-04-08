@@ -33,7 +33,7 @@ PlayingState.prototype.onEnter = function (context) {
 
   this.statusBar.renderRegion.x = this.levelView.leftMargin + this.levelView.spacing;
   this.statusBar.renderRegion.y = 0;
-  this.statusBar.renderRegion.width = (this.levelView.blockSize + this.levelView.spacing) * 4;
+  this.statusBar.renderRegion.width = this.levelView.blockSize * 4;
   this.statusBar.level = level;
   this.statusBar.fontSize = this.levelView.blockSize / 3.75;
   this.statusBar.score = this.game.score;
@@ -43,8 +43,7 @@ PlayingState.prototype.onEnter = function (context) {
   this.selectTransitionTouchInputMethod.listen();
   this.selectTransitionKeyboardInputMethod.listen();
 
-  var gameIsComplete = this.game.score.totalLevelsPlayed() >= this.game.config.levelLimit;
-  if(gameIsComplete) {
+  if (this.game.isComplete) {
       this.game.storageManager.setCurrentLevel(level.getNumber());
   }
 };
@@ -54,5 +53,6 @@ PlayingState.prototype.onLeave = function () {
   this.levelTouchInputMethod.detach();
   this.selectTransitionTouchInputMethod.detach();
   this.selectTransitionKeyboardInputMethod.detach();
+
   return { level: this.levelView.level, levelView: this.levelView, statusBar: this.statusBar };
 };
