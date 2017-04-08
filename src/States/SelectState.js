@@ -9,9 +9,9 @@ function SelectState (game) {
   });
   this.sliderInput = sliderInput;
 
-  var tryTransition = function(value) {
+  var tryTransition = function() {
       var value = sliderInput.value;
-      if (value > 0 && value <= Math.min(game.score.totalLevelsPlayed() + 1, game.config.levelLimit)) {
+      if (game.levelIsAvailable(value)) {
         game.transition('PLAYING');
       }
   };
