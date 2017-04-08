@@ -7,7 +7,7 @@ function LevelCompleteController (storageManager, onSelect, levelLimit, level) {
 
 LevelCompleteController.prototype.left = function () {
   if (typeof this.onSelect === 'function') {
-    this.onSelect(this.level.getNumber());
+    this.onSelect(this.level.getNumber(), true);
   }
 };
 
@@ -19,10 +19,14 @@ LevelCompleteController.prototype.right = function () {
   }
 
   if (typeof this.onSelect === 'function') {
-    this.onSelect(nextLevelNumber);
+    this.onSelect(nextLevelNumber, true);
   }
 };
 
-LevelCompleteController.prototype.up = function () {};
+LevelCompleteController.prototype.up = function () {
+  if (typeof this.onSelect === 'function') {
+    this.onSelect(this.level.getNumber(), false);
+  }
+};
 
 LevelCompleteController.prototype.down = function () {};

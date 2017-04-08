@@ -4,14 +4,12 @@ function CompleteState (game) {
   this.animation = new LevelCompleteAnimation(game.brush, renderRegion);
   this.completeView = new LevelCompleteView(game.brush, renderRegion, game.config.numberColor);
 
-  this.levelCompleteController = new LevelCompleteController(game.storageManager, function (levelNumber) {
+  this.levelCompleteController = new LevelCompleteController(game.storageManager, function (levelNumber, playing) {
     this.nextLevel = game.levels.get(levelNumber);
-    game.transition('PLAYING');
+    game.transition(playing ? 'PLAYING' : 'SELECT');
   }.bind(this));
   this.levelCompleteController.levelLimit = game.config.levelLimit;
 
-  this.keyboardInputMethod = new KeyboardInput(this.levelCompleteController);
-  this.swipeInputMethod = new SwipeInput(game.canvas, this.levelCompleteController);
   // Tap regions for retry and next
   var leftTapRegion = new TapRegion(new BoundingBox(0, renderRegion.height * 0.825, renderRegion.width * 0.5 - 1, renderRegion.height * 0.1), function () {
     this.levelCompleteController.left();
@@ -20,6 +18,8 @@ function CompleteState (game) {
     this.levelCompleteController.right();
   }.bind(this));
   this.tapInputMethod = new TapInput(game.canvas, [leftTapRegion, rightTapRegion]);
+  this.keyboardInputMethod = new KeyboardInput(this.levelCompleteController);
+  this.swipeInputMethod = new SwipeInput(game.canvas, this.levelCompleteController);
 }
 
 CompleteState.prototype.onEnter = function (context) {
@@ -36,6 +36,7 @@ CompleteState.prototype.onEnter = function (context) {
     }
   }
 
+  this.levelView = context.levelView;
   this.completeView.level = context.level;
   this.completeView.score = this.game.score;
   this.animation.level = context.level;
@@ -62,5 +63,6 @@ CompleteState.prototype.onLeave = function () {
   this.swipeInputMethod.detach();
   this.tapInputMethod.detach();
 
-  return { level: this.nextLevel };
+  this.levelView.level = this.nextLevel;
+  return { level: this.nextLevel, levelView: this.levelView };
 };
