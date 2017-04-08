@@ -44,7 +44,7 @@ PlayingState.prototype.onEnter = function (context) {
   this.selectTransitionTapInputMethod.tapRegions[0].boundingBox = new BoundingBox(this.levelView.leftMargin + (this.levelView.blockSize + this.levelView.spacing) * 3, 0, this.levelView.blockSize, this.statusBar.renderRegion.height * 0.75);
   this.selectTransitionTapInputMethod.listen();
 
-  if (this.game.isComplete) {
+  if (this.game.isComplete()) {
       this.game.storageManager.setCurrentLevel(level.getNumber());
   }
 };
