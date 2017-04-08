@@ -28,19 +28,49 @@ LevelCompleteView.prototype.drawResult = function () {
 };
 
 LevelCompleteView.prototype.drawScore = function () {
-  var total, sixteenTotal;
+  var totalAvg;
+  var avgThroughCurrent;
   // Infinity symbol
-  total = sixteenTotal = '\u221E';
-  var levelNumber = this.level.puzzle.original;
-  var lowerBound = Math.max(levelNumber - 15, 1);
-  var upperBound = levelNumber;
+  totalAvg = avgThroughCurrent = '\u221E';
+  var levelNumber = this.level.getNumber();
   try {
-    total = this.score.average().toFixed(4);
-    sixteenTotal = this.score.averageFrom(lowerBound, upperBound).toFixed(4);
+    totalAvg = this.score.average().toFixed(4);
+    avgThroughCurrent = this.score.averageThrough(levelNumber).toFixed(4);
   } catch (e) { }
-  this.brush.font = Math.min(this.renderRegion.width, this.renderRegion.height) * 0.085 + 'px sans-serif';
-  this.brush.fillText('AVG: ' + total, this.renderRegion.width / 2, this.renderRegion.height * 0.475);
-  this.brush.fillText('AVG[' + lowerBound + '-' + upperBound + ']: ' + sixteenTotal, this.renderRegion.width / 2, this.renderRegion.height * 0.575);
+
+  var renderWidth = this.renderRegion.width / 2;
+  var levelNumberRenderY;
+  var endNumberRenderY;
+  var totalAvgRenderY;
+  var isLastPlayedLevel = this.score.totalLevelsPlayed() <= levelNumber;
+  if(isLastPlayedLevel) {
+    levelNumberRenderY = this.renderRegion.height * 0.4
+    endNumberRenderY = this.renderRegion.height * 0.5;
+    totalAvgRenderY = this.renderRegion.height * 0.6;
+  } else {
+    levelNumberRenderY = this.renderRegion.height * 0.375
+    endNumberRenderY = this.renderRegion.height * 0.475;
+    totalAvgRenderY = this.renderRegion.height * 0.575;
+  }
+
+  this.brush.font = Math.min(this.renderRegion.width, this.renderRegion.height) * 0.0825 + 'px sans-serif';
+
+  this.brush.fillText('Level: ' + this.level.getNumber(), renderWidth, levelNumberRenderY);
+
+  var endNumber = this.level.puzzle.number;
+  var endNumberStr = 'End Number: ' + endNumber;
+  if(endNumber === 1) {
+      var moves = this.level.puzzle.history.length;
+      endNumberStr += ' (' + moves + ' Move' + (moves > 1 ? 's)' : ')');
+  }
+  this.brush.fillText(endNumberStr, renderWidth, endNumberRenderY);
+
+  this.brush.fillText('Avg: ' + totalAvg, renderWidth, totalAvgRenderY);
+
+  if(!isLastPlayedLevel) {
+    var label = levelNumber > 1 ? 'Avg[1 - ' + levelNumber + ']:' : 'Avg[1]: ';
+    this.brush.fillText(label + avgThroughCurrent, renderWidth, this.renderRegion.height * 0.675);
+  }
 };
 
 LevelCompleteView.prototype.drawControlLabels = function () {
