@@ -36,6 +36,14 @@ FactorsGame.prototype.transition = function (nextState) {
   this.state.onEnter(context);
 };
 
+FactorsGame.prototype.isComplete = function () {
+  return this.score.totalLevelsPlayed() >= this.config.levelLimit;
+};
+
+FactorsGame.prototype.levelIsAvailable = function (levelNumber) {
+  return levelNumber > 0 && levelNumber <= Math.min(this.score.totalLevelsPlayed() + 1, this.config.levelLimit);
+};
+
 FactorsGame.init = function (canvas, config) {
   config = config || {};
   this.configure(config);
