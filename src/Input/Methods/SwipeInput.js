@@ -3,19 +3,19 @@ function SwipeInput (element, inputController, afterInput) {
   this.inputController = inputController;
   this.afterInput = afterInput;
 
-  var preventDefault = function(event) {event.preventDefault(); };
-
   this.listeners = {
     touchStart: this.startTouch.bind(this),
-    touchMove: preventDefault,
-    touchEnd: this.detectSwipe.bind(this),
+    touchMove: this.detectSwipe.bind(this),
+    touchEnd: this.endSwipe.bind(this),
     mouseDown: this.startTouch.bind(this),
-    mouseMove: preventDefault,
-    mouseUp: this.detectSwipe.bind(this)
+    mouseMove: this.detectSwipe.bind(this),
+    mouseUp: this.endSwipe.bind(this)
   };
 
   this.xStart = null;
   this.yStart = null;
+
+  this.threshold = 25;
 }
 
 SwipeInput.prototype.listen = function () {
@@ -48,8 +48,11 @@ SwipeInput.prototype.detectSwipe = function (event) {
   var deltaX = xEnd - this.xStart;
   var deltaY = yEnd - this.yStart;
 
-  var isHorizontalSwipe = Math.abs(deltaX) > Math.abs(deltaY);
+  if(Math.abs(deltaX) < this.threshold && Math.abs(deltaY) < this.threshold) {
+      return;
+  }
 
+  var isHorizontalSwipe = Math.abs(deltaX) > Math.abs(deltaY);
   if (isHorizontalSwipe) {
     deltaX < 0 ? this.inputController.left() : this.inputController.right();
   } else if (deltaY > 0) {
@@ -64,6 +67,12 @@ SwipeInput.prototype.detectSwipe = function (event) {
   if (typeof this.afterInput === 'function') {
     this.afterInput();
   }
+};
+
+SwipeInput.prototype.endSwipe = function (event) {
+  event.preventDefault();
+  this.xStart = null;
+  this.yStart = null;
 };
 
 SwipeInput.prototype.detach = function () {
