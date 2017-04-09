@@ -51,7 +51,7 @@ FactorsGame.init = function (canvas, config) {
   var storageManager;
   // Make sure storage method can be used
   try {
-    storageManager = new StorageManager(config.storageMethod, config.storagePrefix);
+    storageManager = new OptimizedStorageManager(config.storageMethod, config.storagePrefix);
   } catch (e) {
     // If it cannot, use temporary storage method
     config.storageMethod = {
@@ -63,7 +63,7 @@ FactorsGame.init = function (canvas, config) {
         return this.data[key];
       }
     };
-    storageManager = new StorageManager(config.storageMethod, config.storagePrefix);
+    storageManager = new OptimizedStorageManager(config.storageMethod, config.storagePrefix);
   }
   var score = new Score(function () {
     return storageManager.getLevelResults();
