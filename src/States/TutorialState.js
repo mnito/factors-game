@@ -2,7 +2,7 @@ function TutorialState (game) {
   this.game = game;
   this.playingState = new PlayingState(game);
   var renderRegion = new RenderRegion(null, game.canvas.height * 0.005, null, game.canvas.height * 0.10);
-  var tutorial = new TutorialRenderer(game.brush, renderRegion, game.config.textColor, game.config.textBackground);
+  var tutorial = new TutorialRenderer(game.brush, renderRegion, game.config.theme.textColor, game.config.theme.textBackground);
   this.tutorial = tutorial;
   var afterInput = this.playingState.levelController.afterInput;
   // Draw tutorial content after level view is drawn

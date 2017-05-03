@@ -1,7 +1,7 @@
 function PlayingState (game) {
   this.game = game;
   var renderRegion = new RenderRegion(0, game.canvas.height * 0.15, game.canvas.width, game.canvas.height * 0.85);
-  this.levelView = new LevelView(game.brush, renderRegion, 2, game.config.numberColor);
+  this.levelView = new LevelView(game.brush, renderRegion, 2, game.config.theme.numberColor);
   this.statusBar = new StatusBar(game.brush, new RenderRegion());
   this.statusBar.renderRegion.height = game.canvas.height * 0.15;
   this.levelController = new LevelController();

@@ -47,7 +47,7 @@ FactorsGame.prototype.levelIsAvailable = function (levelNumber) {
 FactorsGame.init = function (canvas, config) {
   config = config || {};
   this.configure(config);
-  var levels = new Levels(new XSPRNG(1), config.paletteRange, new MonochromaticPaletteBuilder(null, null, 0.8));
+  var levels = new Levels(new XSPRNG(1), config.theme);
   var storageManager;
   // Make sure storage method can be used
   try {
@@ -75,12 +75,9 @@ FactorsGame.configure = function (config) {
   var isPositiveInt = function (number) {
     return ((number ^ 0) === number && number > 0) || number === Number.POSITIVE_INFINITY;
   };
-  config.numberColor = config.numberColor || '#FFFFFF';
-  config.textColor = config.textColor || '#000000';
-  config.textBackground = config.textBackground || '#FFFFFF';
-  config.paletteRange = isPositiveInt(config.paletteRange) && config.paletteRange <= 100 ? config.paletteRange : 70;
   config.levelLimit = isPositiveInt(config.levelLimit) ? config.levelLimit : 256;
   config.storageMethod = config.storageMethod || localStorage;
   config.storagePrefix = config.storagePrefix || 'factors_';
   config.showTutorial = typeof config.showTutorial !== 'undefined' ? config.showTutorial : true;
+  config.theme = config.theme || new NightRainbowTheme();
 };

@@ -2,7 +2,7 @@ function CompleteState (game) {
   this.game = game;
   var renderRegion = new RenderRegion(0, 0, game.canvas.width, game.canvas.height);
   this.animation = new LevelCompleteAnimation(game.brush, renderRegion);
-  this.completeView = new LevelCompleteView(game.brush, renderRegion, game.config.numberColor);
+  this.completeView = new LevelCompleteView(game.brush, renderRegion, game.config.theme.numberColor);
 
   this.levelCompleteController = new LevelCompleteController(game.storageManager, function (levelNumber, playing) {
     this.nextLevel = game.levels.get(levelNumber);
