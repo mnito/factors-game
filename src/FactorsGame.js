@@ -80,4 +80,5 @@ FactorsGame.configure = function (config) {
   config.storagePrefix = config.storagePrefix || 'factors_';
   config.showTutorial = typeof config.showTutorial !== 'undefined' ? config.showTutorial : true;
   config.theme = config.theme || new NightRainbowTheme();
+  config.changeDocumentTextColor = typeof config.changeDocumentTextColor !== 'undefined' ? config.changeDocumentTextColor : false;
 };

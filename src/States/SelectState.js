@@ -1,7 +1,7 @@
 function SelectState (game) {
   this.game = game;
 
-  var selectView = new LevelSelectView(game.brush, new RenderRegion(0, 0, game.canvas.width, game.canvas.height), game.storageManager, new XSPRNG(1), new MonochromaticPaletteBuilder(), game.config.theme.numberColor);
+  var selectView = new LevelSelectView(game.brush, new RenderRegion(0, 0, game.canvas.width, game.canvas.height), game.storageManager, game.config.theme);
   this.selectView = selectView;
 
   var sliderInput = new SliderInput(game.canvas, function (value, x, y, end) {

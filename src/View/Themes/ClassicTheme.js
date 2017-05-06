@@ -1,5 +1,6 @@
 function ClassicTheme (paletteRange) {
-  this.paletteRange = paletteRange;
+  this.paletteRange = paletteRange || 70;
+  this.prng = new XSPRNG(1);
   this.paletteBuilder = new MonochromaticPaletteBuilder(null, null, 0.8);
 }
 
@@ -11,23 +12,23 @@ ClassicTheme.prototype.textColor = '#000000';
 
 ClassicTheme.prototype.textBackground = '#FFFFFF';
 
-ClassicTheme.prototype.level = null;
+ClassicTheme.prototype.sliderColor = '#FFFFFF';
 
-ClassicTheme.prototype.randomInput = [];
+NightRainbowTheme.prototype.changesDocumentTextColor = false;
 
 ClassicTheme.prototype.getLevelPalette = function (level) {
-  if(this.randomInput.length < 2) {
-    throw "Classic theme requires at least 3 random inputs.";
+  if (typeof this.prng.seed === 'function') {
+    this.prng.seed(level);
   }
 
-  var hue = Math.floor(this.randomInput[0] * 360);
-  var saturation = Math.floor(this.randomInput[1] * 20) + 80;
+  var hue = Math.floor(this.prng.random() * 360);
+  var saturation = Math.floor(this.prng.random() * 20) + 80;
 
   this.paletteBuilder.hue = hue;
   this.paletteBuilder.saturation = saturation;
 
   var boardColors = this.paletteBuilder.build(16, this.paletteRange);
-  var numberColor = HSL.complement(boardColors[Math.floor(this.randomInput[2] * 16)]);
+  var numberColor = HSL.complement(boardColors[Math.floor(this.prng.random() * 16)]);
   var backgroundColor = numberColor.clone();
   backgroundColor.l = Math.floor(numberColor.l + 45) % 101;
   backgroundColor.a = 1;

@@ -1,10 +1,8 @@
-function LevelSelectView (brush, renderRegion, storageManager, prng, monochromaticPaletteBuilder, numberColor, blockSize, xPad) {
+function LevelSelectView (brush, renderRegion, storageManager, theme, blockSize, xPad) {
   this.brush = brush;
   this.renderRegion = renderRegion;
   this.storageManager = storageManager;
-  this.prng = prng;
-  this.monochromaticPaletteBuilder = monochromaticPaletteBuilder;
-  this.numberColor = numberColor;
+  this.theme = theme;
   this.sliderY = this.renderRegion.height * .5
   this.blockSize = blockSize;
   this.xPad = xPad || 0;
@@ -23,6 +21,7 @@ LevelSelectView.prototype.drawLevelResults = function (value) {
     result = number < 10 ? 'LOW!' : 'High';
   }
 
+  this.brush.fillStyle = this.theme.sliderColor;
   this.brush.font = 'bold ' + this.blockSize * 0.5 + 'px sans-serif';
   this.brush.fillText(result, this.renderRegion.width / 2, this.renderRegion.height * 0.40);
 
@@ -42,7 +41,7 @@ LevelSelectView.prototype.drawNumber = function (value, blockColor) {
   }
 
   this.brush.font = 'bold ' + this.blockSize * 0.5 + 'px sans-serif';
-  this.brush.fillStyle = this.numberColor;
+  this.brush.fillStyle = this.theme.numberColor;
   this.brush.fillText('' + value, this.renderRegion.width / 2, (this.renderRegion.height * .15) + (this.blockSize / 2));
 };
 
@@ -67,7 +66,7 @@ LevelSelectView.prototype.drawButton = function (color) {
   this.brush.fillStyle = color;
   this.brush.fillRect(this.xPad, this.renderRegion.height * .75, this.renderRegion.width - (this.xPad * 2), this.renderRegion.height * .15);
   this.brush.font = 'bold ' + this.blockSize * 0.5 + 'px sans-serif';
-  this.brush.fillStyle = this.numberColor;
+  this.brush.fillStyle = this.theme.numberColor;
   this.brush.fillText('Play', this.renderRegion.width / 2, this.renderRegion.height * .75 + this.renderRegion.height * .075);
 };
 
@@ -82,23 +81,15 @@ LevelSelectView.prototype.draw = function (value, x, y, end) {
   var blockColor = '#808080';
 
   if (end && value > 0) {
-    if (typeof this.prng.seed === 'function') {
-      this.prng.seed(value);
-    }
-    var hue = Math.floor(this.prng.random() * 360);
-    var saturation = Math.floor(this.prng.random() * 20) + 80;
-    this.monochromaticPaletteBuilder.hue = hue;
-    this.monochromaticPaletteBuilder.saturation = saturation;
-    boardColors = this.monochromaticPaletteBuilder.build(16, 70);
-    blockColor = HSL.complement(boardColors[Math.floor(this.prng.random() * 16)]).toString();
+    blockColor = this.theme.getLevelPalette(value).numberColor.toString();
   }
 
   this.brush.font = 'bold ' + this.blockSize * 0.25 + 'px sans-serif';
-  this.brush.fillStyle = this.numberColor;
+  this.brush.fillStyle = this.theme.sliderColor;
   this.brush.fillText('LEVEL', this.renderRegion.width / 2, this.renderRegion.height * 0.10);
   this.drawNumber(value, blockColor);
   this.drawLevelResults(value);
-  this.drawSlider(value, x, y, this.numberColor);
+  this.drawSlider(value, x, y, this.theme.sliderColor);
   this.drawButton(blockColor);
 };
 

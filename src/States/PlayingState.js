@@ -41,6 +41,10 @@ PlayingState.prototype.onEnter = function (context) {
   this.statusBar.score = this.game.score;
   this.statusBar.draw();
 
+  if (this.game.config.changeDocumentTextColor && this.game.config.theme.changesDocumentTextColor) {
+    document.body.style.color = level.palette.numberColor.toString();
+  }
+
   this.selectTransitionTapInputMethod.tapRegions[0].boundingBox = new BoundingBox(this.levelView.leftMargin + (this.levelView.blockSize + this.levelView.spacing) * 3, 0, this.levelView.blockSize, this.statusBar.renderRegion.height * 0.75);
   this.selectTransitionTapInputMethod.listen();
 

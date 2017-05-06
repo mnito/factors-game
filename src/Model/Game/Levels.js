@@ -6,16 +6,12 @@ function Levels (prng, theme) {
 Levels.prototype.get = function (level) {
   if (typeof this.prng.seed === 'function') {
     this.prng.seed(level);
+    this.prng.random();
+    this.prng.random();
+    this.prng.random();
   }
 
-  this.theme.level = level;
-  this.theme.randomInput = [
-    this.prng.random(),
-    this.prng.random(),
-    this.prng.random()
-  ];
-
-  var levelPalette = this.theme.getLevelPalette();
+  var levelPalette = this.theme.getLevelPalette(level);
 
   var board = Board.create(4, 4, this.prng);
   board.shuffle();
