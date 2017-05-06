@@ -1,15 +1,15 @@
 function NightRainbowTheme () {
-  this.paletteBuilder = new SingleColorPaletteBuilder(new HSL(180, 60, 29));
+  this.paletteBuilder = new SingleColorPaletteBuilder(new HSL(180, 60, 30));
 }
 
 NightRainbowTheme.prototype.colors = [
-  new HSL(0, 100, 84),
-  new HSL(25, 100, 72),
-  new HSL(55, 100, 43),
-  new HSL(150, 100, 50),
-  new HSL(200, 100, 70),
-  new HSL(252, 100, 86),
-  new HSL(290, 100, 82)
+  new HSL(0, 100, 77),
+  new HSL(25, 100, 64),
+  new HSL(57, 100, 37),
+  new HSL(150, 100, 43),
+  new HSL(200, 100, 60),
+  new HSL(252, 100, 80),
+  new HSL(290, 100, 77)
 ];
 
 NightRainbowTheme.prototype.numberColor = '#202030';
