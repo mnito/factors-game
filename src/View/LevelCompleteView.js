@@ -68,7 +68,7 @@ LevelCompleteView.prototype.drawScore = function () {
   this.brush.fillText('Avg: ' + totalAvg, renderWidth, totalAvgRenderY);
 
   if(!isLastPlayedLevel) {
-    var label = levelNumber > 1 ? 'Avg[1 - ' + levelNumber + ']:' : 'Avg[1]: ';
+    var label = levelNumber > 1 ? 'Avg[1 - ' + levelNumber + ']: ' : 'Avg[1]: ';
     this.brush.fillText(label + avgThroughCurrent, renderWidth, this.renderRegion.height * 0.675);
   }
 };
