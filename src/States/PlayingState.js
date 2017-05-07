@@ -35,6 +35,7 @@ PlayingState.prototype.onEnter = function (context) {
 
   this.statusBar.renderRegion.x = this.levelView.leftMargin + this.levelView.spacing;
   this.statusBar.renderRegion.y = 0;
+  this.statusBar.offsetTop = this.game.config.statusBarOffsetTop;
   this.statusBar.renderRegion.width = this.levelView.blockSize * 4;
   this.statusBar.level = level;
   this.statusBar.fontSize = this.levelView.blockSize / 3.75;

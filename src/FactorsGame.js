@@ -84,4 +84,5 @@ FactorsGame.configure = function (config) {
   config.showTutorial = typeof config.showTutorial !== 'undefined' ? config.showTutorial : true;
   config.theme = config.theme || new NightRainbowTheme();
   config.changeDocumentTextColor = typeof config.changeDocumentTextColor !== 'undefined' ? config.changeDocumentTextColor : false;
+  config.statusBarOffsetTop = config.statusBarOffsetTop || 0;
 };
