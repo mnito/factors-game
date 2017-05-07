@@ -16,9 +16,9 @@ NightRainbowTheme.prototype.numberColor = '#202030';
 
 NightRainbowTheme.prototype.defaultBackgroundColor = '#202030';
 
-NightRainbowTheme.prototype.textColor = '#000000';
+NightRainbowTheme.prototype.textColor = '#FFFFFF';
 
-NightRainbowTheme.prototype.textBackground = '#FFFFFF';
+NightRainbowTheme.prototype.textBackground = '#202030';
 
 NightRainbowTheme.prototype.sliderColor = '#FFFFFF';
 

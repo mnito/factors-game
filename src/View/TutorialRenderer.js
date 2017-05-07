@@ -20,7 +20,7 @@ function TutorialRenderer (brush, renderRegion, textColor, blockColor, borderCol
 }
 
 TutorialRenderer.prototype.resetFont = function () {
-  this.brush.font = 'bold ' + this.renderRegion.width * 0.05 + 'px sans-serif';
+  this.brush.font = 'bold ' + this.renderRegion.width * 0.045 + 'px sans-serif';
   this.brush.textAlign = 'center';
   this.brush.textBaseline = 'middle';
   this.brush.fillStyle = this.textColor;
@@ -49,6 +49,8 @@ TutorialRenderer.prototype.draw = function () {
 
 TutorialRenderer.prototype.drawLine = function (text) {
   this.brush.fillStyle = this.blockColor;
+  this.brush.strokeStyle = this.textColor;
+  this.brush.lineWidth = this.renderRegion.width * 0.005;
   var x = this.renderRegion.x;
   var y = this.renderRegion.y;
   var width = this.renderRegion.width;
