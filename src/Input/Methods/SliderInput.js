@@ -136,7 +136,7 @@ SliderInput.prototype.setValue = function (event) {
         return;
     }
   }
-  var x = Math.max(this.value, this.min) * ((this.maxWidth - this.xPad * 2) / this.max) + this.xPad;
+  var x = (Math.max(this.value, this.min) - this.min) * ((this.maxWidth - this.xPad * 2) / (this.max - this.min)) + this.xPad;
   this.lastX = x;
   this.callback(this.value, x, null, true);
 };
