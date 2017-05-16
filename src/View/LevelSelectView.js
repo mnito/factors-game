@@ -78,7 +78,7 @@ LevelSelectView.prototype.draw = function (value, x, y, end) {
   this.brush.textAlign = 'center';
   this.brush.textBaseline = 'middle';
 
-  var blockColor = '#808080';
+  var blockColor = this.theme.defaultGray || '#808080';
 
   if (end && value > 0) {
     blockColor = this.theme.getLevelPalette(value).numberColor.toString();

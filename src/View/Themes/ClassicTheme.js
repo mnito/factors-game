@@ -16,6 +16,8 @@ ClassicTheme.prototype.sliderColor = '#FFFFFF';
 
 ClassicTheme.prototype.changesDocumentTextColor = false;
 
+ClassicTheme.prototype.defaultGray = '#808080';
+
 ClassicTheme.prototype.getLevelPalette = function (level) {
   if (typeof this.prng.seed === 'function') {
     this.prng.seed(level);

@@ -24,6 +24,8 @@ NightRainbowTheme.prototype.sliderColor = '#FFFFFF';
 
 NightRainbowTheme.prototype.changesDocumentTextColor = true;
 
+NightRainbowTheme.prototype.defaultGray = '#969696';
+
 NightRainbowTheme.prototype.getLevelPalette = function (level) {
   var numberColor = this.colors[(level - 1) % 7];
   var boardColors = this.paletteBuilder.build(16);
