@@ -25,7 +25,7 @@ SelectState.prototype.onEnter = function (context) {
   this.selectView.blockSize = context.levelView.blockSize;
   this.selectView.xPad = context.levelView.leftMargin / 2 + (context.levelView.blockSize / 2);
 
-  this.sliderInput.min = 0;
+  this.sliderInput.min = 1;
   this.sliderInput.max = Math.min(this.game.score.totalLevelsPlayed() + 1, this.game.config.levelLimit);
   this.sliderInput.xPad = this.selectView.xPad;
   this.sliderInput.yMin = this.selectView.sliderY - this.selectView.blockSize;
