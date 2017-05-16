@@ -14,7 +14,7 @@ ClassicTheme.prototype.textBackground = '#FFFFFF';
 
 ClassicTheme.prototype.sliderColor = '#FFFFFF';
 
-NightRainbowTheme.prototype.changesDocumentTextColor = false;
+ClassicTheme.prototype.changesDocumentTextColor = false;
 
 ClassicTheme.prototype.getLevelPalette = function (level) {
   if (typeof this.prng.seed === 'function') {
