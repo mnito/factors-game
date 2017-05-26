@@ -1,4 +1,4 @@
-function SliderInput (element, callback, xPad, yMin, yMax, min, max) {
+function SliderInput (element, callback, xPad, yMin, yMax, min, max, radius) {
   this.element = typeof element !== 'undefined' ? element : document;
   this.maxWidth = element.width || element.offsetWidth || element.clientWidth || window.innerWidth;
   this.callback = callback;
@@ -15,6 +15,8 @@ function SliderInput (element, callback, xPad, yMin, yMax, min, max) {
 
   this.xStart = null;
   this.yStart = null;
+
+  this.radius = radius || 0;
 
   this.listeners = {
     touchStart: this.startTouch.bind(this),
@@ -61,7 +63,8 @@ SliderInput.prototype.offsetPoints = function (x, y, event) {
 SliderInput.prototype.determineValue = function (event) {
   event.preventDefault();
   event.stopPropagation();
-  if (this.xStart === null || this.yStart < this.yMin || this.yStart > this.yMax) {
+
+  if (this.xStart === null || this.xStart < (this.xPad - this.radius) || this.xStart > ((this.maxWidth - this.xPad) + this.radius) || this.yStart < this.yMin || this.yStart > this.yMax) {
     return;
   }
   var offset = this.offsetPoints(event.clientX || event.touches[0].clientX, event.clientY || event.touches[0].clientY, event);
@@ -136,13 +139,16 @@ SliderInput.prototype.setValue = function (event) {
         return;
     }
   }
-  var x = (Math.max(this.value, this.min) - this.min) * ((this.maxWidth - this.xPad * 2) / (this.max - this.min)) + this.xPad;
+  var x = this.min === this.max ? this.maxWidth / 2 : (Math.max(this.value, this.min) - this.min) * ((this.maxWidth - this.xPad * 2) / (this.max - this.min)) + this.xPad;
   this.lastX = x;
   this.callback(this.value, x, null, true);
 };
 
-SliderInput.prototype.triggerInitial = function (value) {
-  var x = Math.max(value, this.min) * ((this.maxWidth - this.xPad * 2) / this.max) + this.xPad;
+SliderInput.prototype.trigger = function (value) {
+  if (value > this.max || value < this.min) {
+    return;
+  }
+  var x = this.min === this.max ? this.maxWidth / 2 : (Math.max(value, this.min) - this.min) * ((this.maxWidth - this.xPad * 2) / (this.max - this.min)) + this.xPad;
   this.lastX = x;
   this.value = value;
   this.callback(value, x, null, true);

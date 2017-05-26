@@ -46,32 +46,74 @@ LevelSelectView.prototype.drawNumber = function (value, blockColor) {
 };
 
 LevelSelectView.prototype.drawSlider = function (value, x, y, color) {
+  var radius = this.blockSize / 6;
   this.brush.font = 'bold ' + this.blockSize * 0.5 + 'px sans-serif';
   this.brush.strokeStyle = color;
   this.brush.lineWidth = 5;
+
   this.brush.beginPath();
-
-  this.brush.moveTo(0 + this.xPad / 4, this.sliderY);
-  this.brush.lineTo(this.renderRegion.width - this.xPad / 4, this.sliderY);
+  this.brush.moveTo(this.xPad - radius * 2, this.sliderY);
+  this.brush.lineTo(this.renderRegion.width - this.xPad + radius * 2, this.sliderY);
   this.brush.stroke();
+  this.brush.closePath();
 
-  var radius = this.blockSize / 6;
   this.brush.beginPath();
   this.brush.arc(x, this.sliderY, radius, 2 * Math.PI, false);
-
   this.brush.stroke();
+  this.brush.closePath();
+
+  this.drawSliderTapControls(color);
+};
+
+LevelSelectView.prototype.drawSliderTapControls = function (color) {
+  this.brush.fillStyle = color;
+  this.brush.strokeStyle = color;
+  this.brush.lineWidth = 10;
+
+  var xPos = this.xPad / 2;
+  var xSize = this.blockSize / 3;
+  var yPos = this.sliderY;
+  var ySize = this.blockSize / 1.5;
+
+  this.brush.beginPath();
+  this.brush.moveTo(this.renderRegion.width - xPos, yPos + ySize);
+  this.brush.lineTo(this.renderRegion.width - xPos + xSize, yPos);
+  this.brush.lineTo(this.renderRegion.width - xPos, yPos - ySize);
+  this.brush.lineTo(this.renderRegion.width - xPos, yPos + ySize);
+  this.brush.fill();
+  this.brush.closePath();
+
+  this.brush.beginPath();
+  this.brush.moveTo(xPos, yPos + ySize);
+  this.brush.lineTo(xPos - xSize, yPos);
+  this.brush.lineTo(xPos, yPos - ySize);
+  this.brush.lineTo(xPos, yPos + ySize);
+  this.brush.fill();
+  this.brush.closePath();
 };
 
 LevelSelectView.prototype.drawButton = function (color) {
   this.brush.fillStyle = color;
-  this.brush.fillRect(this.xPad, this.renderRegion.height * .75, this.renderRegion.width - (this.xPad * 2), this.renderRegion.height * .15);
+  this.brush.fillRect(this.xPad, this.renderRegion.height * .75, this.renderRegion.width - this.xPad * 2, this.renderRegion.height * .15);
   this.brush.font = 'bold ' + this.blockSize * 0.5 + 'px sans-serif';
   this.brush.fillStyle = this.theme.numberColor;
   this.brush.fillText('Play', this.renderRegion.width / 2, this.renderRegion.height * .75 + this.renderRegion.height * .075);
 };
 
 LevelSelectView.prototype.getButtonBoundingBox = function() {
-    return new BoundingBox(this.xPad, this.renderRegion.height * .75, this.renderRegion.width - (this.xPad * 2), this.renderRegion.height * .15);
+    return new BoundingBox(this.xPad / 2, this.renderRegion.height * .75, this.renderRegion.width - this.xPad, this.renderRegion.height * .15);
+};
+
+LevelSelectView.prototype.getSliderTapBoundingBoxes = function() {
+  var ySize = this.blockSize / 1.5;
+  var ySizeDoubled = ySize * 2;
+  var topY = this.sliderY - ySize;
+  var additionalPadding = this.blockSize / 2;
+
+  return {
+    previous: new BoundingBox(0, topY, this.xPad - additionalPadding, ySizeDoubled),
+    next: new BoundingBox(this.renderRegion.width - this.xPad + additionalPadding, topY, this.xPad - additionalPadding, ySizeDoubled)
+  };
 };
 
 LevelSelectView.prototype.draw = function (value, x, y, end) {
