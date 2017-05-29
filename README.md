@@ -4,7 +4,7 @@ The 🐐 of fun math games, twisting the very rules of math and increasingly cha
 
 ### Screenshot
 
-![Screenshot of level 10 of Factors Game](/etc/level-10-screenshot.png?raw=true "Level 10")
+![Screenshot of level 2 of Factors Game](/etc/screenshots/level-2-night-rainbow-screenshot.png?raw=true "Level 2")
 
 ## The Concept
 
