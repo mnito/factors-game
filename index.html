@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Factors Game - The 🐐 of Fun Math Games</title>
+        <meta name="description" content="Twisting the very rules of math and increasingly challenging your skills, use addition and division to get your number as close to 1 as possible. Can you get to 1? Find out now right in your browser!">
+        <meta name="author" content="Michael P. Nitowski">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="application-name" content="Factors Game">
+        <meta property="og:title" content="Factors Game - The 🐐 of Fun Math Games">
+        <meta property="og:type" content="website">
+        <meta property="og:image" content="https://factorsgame.com/screenshots/screenshot-level-2.png">
+        <meta property="og:description" content="Twisting the very rules of math and increasingly challenging your skills, use addition and division to get your number as close to 1 as possible. Can you get to 1? Find out now right in your browser!">
+        <meta property="og:url" content="https://factorsgame.com/">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Factors Game - The 🐐 of Fun Math Games">
+        <meta name="twitter:description" content="Twisting the very rules of math and increasingly challenging your skills, use addition and division to get your number as close to 1 as possible. Can you get to 1? Find out now right in your browser!">
+        <meta name="twitter:image" content="https://factorsgame.com/screenshots/screenshot-level-2.png">
+        <link rel="icon" type="image/png" href="favicon.png">
+        <style type="text/css">
+            html, body {
+                padding: 0 !important;
+                margin: 0 !important;
+                background-color: #202030 !important;
+                color: #FFFFFF;
+                font-family: sans-serif;
+                transition: color .75s ease-in;
+            }
+            canvas {
+                display: block !important;
+                background-color: #202030 !important;
+                width: 100%;
+            }
+            h1 {
+                margin-bottom: 25px;
+            }
+            h1 small {
+                display: block;
+                font-size: 50%;
+            }
+            header, main, footer, hr {
+                display: block;
+                width: 85%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            main {
+                margin-bottom: 50px;
+            }
+            main div:first-of-type {
+                clear: both;
+            }
+            footer, hr {
+                margin-bottom: 25px;
+            }
+            a {
+                text-decoration: none;
+                font-weight: bold;
+                color: #31c0c0;
+            }
+            a:hover {
+                text-decoration: underline;
+            }
+            header h1 {
+                float: left;
+                font-size: 1.85em;
+            }
+            #fullscreen-control {
+                margin-top: 25px;
+                padding-top: 25px;
+                padding-bottom: 25px;
+                font-size: 12px;
+                float: right;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>
+                Factors Game
+                <small>The 🐐 of Fun Math Games</small>
+            </h1>
+        </header>
+
+        <main>
+            <canvas id="factors-game-canvas"></canvas>
+            <div>
+                <h2>Can You Get to 1?</h2>
+                <p>
+                    With a twist on the basic rules of division, Factors Game is a <strong>fun math game</strong> designed to be easy
+                    to learn but increasingly challenge your mental math skills as you progress through the levels.
+                </p>
+
+                <h3>The Goal</h3>
+                <p>
+                    Move your number down through the number board to <strong>get as close to 1 as possible
+                    in the least amount of moves</strong>.
+                </p>
+                <p>
+                    But be warned, some levels may not be solvable with a 1!
+                    Your overarching goal is to <strong>keep your ending average as low as possible</strong>.
+                </p>
+
+                <h3>The Controls</h3>
+                <ul>
+                    <li>Swipe or type <strong>left</strong> and <strong>right</strong> to set up your next move.</li>
+                    <li>Swipe or type <strong>down</strong> to make a move.</li>
+                    <li>Swipe or type <strong>up</strong> to start the level over.</li>
+                </ul>
+
+                <h3>The Rules</h3>
+                <ul>
+                    <li>If your number encounters a factor, it will be divided by that factor.</li>
+                    <li>All other numbers will add to your number.</li>
+                </ul>
+
+                <h2>While You're Here &hellip;</h2>
+                <p>
+                    Did you know that Factors Game is a <strong>free and open source game</strong> with
+                    <a href="https://github.com/mnito/factors-game" title="The source code of Factors Game">the source code available here</a>?
+                    It is. I promise. And it is licensed under the
+                    <a rel="license" href="https://github.com/mnito/factors-game/blob/master/LICENSE" title="The MIT License of Factors Game">MIT License</a>!
+                </p>
+            </div>
+        </main>
+        <hr>
+        <footer>
+            <span class="author">Factors Game is written by <a rel="author" href="https://twitter.com/mikenitowski">Michael P. Nitowski</a>.</span>
+            <span class="copyright">&copy; 2016-2017 Michael P. Nitowski</span>
+        </footer>
+        <script src="factors-game-full.min.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            var canvas = document.getElementById('factors-game-canvas');
+            canvas.width = window.innerWidth * 2;
+            canvas.height = (window.innerHeight * .8) * 2;
+            FactorsGame.init(canvas, { changeDocumentTextColor: true }).start();
+        </script>
+    </body>
+</html>
